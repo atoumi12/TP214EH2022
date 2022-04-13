@@ -5,12 +5,55 @@ using MongoDB.Bson;
 
 namespace MonCine.Data
 {
-    public class Abonne
+    public class Abonne /*: Personne*/
     {
-        public ObjectId Id { get; set; }
+        private ObjectId Id { get; set; }
         public string Username { get; set; }
-        public DateTime DateAdhesion { get; set; }
-        
-        // A compléter 
+        private DateTime DateAdhesion { get; set; }
+
+        private String ActeurFavorie { get; set; }
+
+        private String RealisateurFavorie { get; set; }
+
+        private String Categorie { get; set; }
+
+        private bool Recomprenses { get; set; }
+
+        private bool Reservation { get; set; }
+
+        private int nbSeanceAssistees { get; set; }
+
+
+
+        public Abonne(string pUsername)
+        {
+            Username = pUsername;
+        }
+
+
+        public void NoterFilm()
+        {
+
+        }
+
+        public bool AimeCategorie()
+        {
+            return false;
+        }
+
+        public bool EstPropriaitaire()
+        {
+            return false;
+        }
+
+
+
+
+        public override string ToString()
+        {
+            return $"{Username}";
+        }
     }
+
+
 }

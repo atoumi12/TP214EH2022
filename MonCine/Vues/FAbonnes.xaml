@@ -6,7 +6,49 @@
         xmlns:local="clr-namespace:MonCine.Vues"
         mc:Ignorable="d"
         Title="FAbonnes" Height="450" Width="800">
-    <Grid>
-        
+    
+    
+    <Grid ShowGridLines="False" Background="AliceBlue" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="100" Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown"/>
+
+        <ListView x:Name="LstAbonnes" Grid.Row="1" Grid.Column="1" 
+                  Grid.RowSpan="2"
+                  Margin="0,0,15,0" SelectionChanged="LstAbonnes_SelectionChanged"></ListView>
+
+
+        <!-- Details d'un film -->
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Nom : "></TextBlock>
+        <TextBox x:Name="NameField" 
+                 Grid.Row="1" Grid.Column="3" Width="150" Grid.ColumnSpan="2"></TextBox>
+
+
+
+        <!-- Action -->
+        <Button x:Name="BtnUpdate" Grid.Row="4" Grid.Column="4" Margin="2,0"
+                Content="Modifier" Click="BtnUpdate_Click" 
+                FontSize="18"></Button>
+
+        <Button x:Name="BtnDelete" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Margin="2,0" 
+                Content="Supprimer" Click="BtnDelete_Click"
+                FontSize="18"></Button>
     </Grid>
+
 </Page>

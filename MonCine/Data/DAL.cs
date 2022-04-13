@@ -20,6 +20,7 @@ namespace MonCine.Data
             database = ConnectDatabase();
 
             AddDefaultFilms();
+            AddDefaultAbo();
         }
 
         private IMongoClient OuvrirConnexion()
@@ -54,7 +55,7 @@ namespace MonCine.Data
 
         public List<Abonne> ReadAbonnes()
         {
-            var abonnes = new List<Abonne>();
+            List<Abonne> abonnes = new List<Abonne>();
 
             try
             {
@@ -119,6 +120,33 @@ namespace MonCine.Data
             catch (Exception ex)
             {
                 MessageBox.Show("Impossible d'ajouter des films dans la collection " + ex.Message, "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                throw;
+            }
+        }
+
+        private async void AddDefaultAbo()
+        { 
+            List<Abonne> abonnes = new List<Abonne>
+            {
+                new Abonne("Abonne 1"),
+                new Abonne("Abonne 2"),
+                new Abonne("Abonne 3")
+            };
+
+            try
+            {
+                database.DropCollection("Abonnes");
+                var collection = database.GetCollection<Abonne>("Abonnes");
+                if (collection.CountDocuments(Builders<Abonne>.Filter.Empty) <= 0)
+                {
+                    await collection.InsertManyAsync(abonnes);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossible d'ajouter des abonnes dans la collection " + ex.Message, "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
