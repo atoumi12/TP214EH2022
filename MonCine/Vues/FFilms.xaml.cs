@@ -20,13 +20,13 @@ namespace MonCine.Vues
     public partial class FFilms : Page
     {
         private List<Film> Films { get; set; }
-        private DALFilm Dal { get; set; }
+        private DALFilm _DalFilm { get; set; }
 
 
-        public FFilms(DALFilm pDal)
+        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur)
         {
             InitializeComponent();
-            Dal = pDal;
+            _DalFilm = pDalFilm;
 
 
             InitialConfiguration();
@@ -38,7 +38,7 @@ namespace MonCine.Vues
         private void InitialConfiguration()
         {
             InitialiseListView();
-            PopulateCategory();
+            PopulateComboBoxes();
 
             BtnDelete.IsEnabled = false;
             BtnUpdate.IsEnabled = false;
@@ -47,20 +47,23 @@ namespace MonCine.Vues
 
         private void InitialiseListView()
         {
-            Films = Dal.ReadItems();
+            Films = _DalFilm.ReadItems();
             LstFilms.ItemsSource = Films;
 
-            GridViewColumnNote.DisplayMemberBinding = new Binding("CalculerMoyennesNotes");
+            //GridViewColumnNote.DisplayMemberBinding = new Binding("CalculerMoyennesNotes");
         }
 
-        private void PopulateCategory()
+        private void PopulateComboBoxes()
         {
+            // Categorie
             List<String> categories = typeof(Categorie).GetEnumNames().ToList();
-
             foreach (string cat in categories)
             {
                 CategoryCombobox.Items.Add(cat);
             }
+
+            // Acteurs
+            //List<String>
         }
 
 
@@ -69,7 +72,7 @@ namespace MonCine.Vues
         /// </summary>
         private void RefreshItems()
         {
-            LstFilms.ItemsSource = Dal.ReadItems();
+            LstFilms.ItemsSource = _DalFilm.ReadItems();
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = CreateFilmToAdd();
-                var result = await Dal.AddItem(film);
+                var result = await _DalFilm.AddItem(film);
                 if (result)
                 {
                     RefreshItems();
@@ -147,7 +150,7 @@ namespace MonCine.Vues
             {
                 Film film = (Film)LstFilms.SelectedItem;
                 UpdateFilm(film);
-                var result = await Dal.UpdateItem(film);
+                var result = await _DalFilm.UpdateItem(film);
 
                 if (result)
                 {
@@ -177,7 +180,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = (Film)LstFilms.SelectedItem;
-                var result = await Dal.DeleteItem(film);
+                var result = await _DalFilm.DeleteItem(film);
 
                 if (result)
                 {

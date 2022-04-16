@@ -105,7 +105,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"{Name} - ({CalculerMoyennesNotes()}/10) - {Categories?[0]}";
+            return $"{Name} - ({CalculerMoyennesNotes()}/10)";
         }
     }
 }
