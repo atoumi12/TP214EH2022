@@ -25,9 +25,7 @@ namespace MonCine.Data
         {
             List<Film> films = new List<Film>
             {
-                new Film("Film 1"),
-                new Film("Film 2"),
-                new Film("Film 3")
+                new Film("Film 1")
             };
 
             try
@@ -59,7 +57,7 @@ namespace MonCine.Data
 
             try
             {
-                var collection = database.GetCollection<Film>("Films");
+                var collection = database.GetCollection<Film>(CollectionName);
                 films = collection.Aggregate().ToList();
             }
             catch (Exception ex)

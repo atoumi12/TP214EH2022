@@ -29,22 +29,20 @@ namespace MonCine.Vues
             // TODO: A changer
             FAbonnes frmAbonnes = new FAbonnes(new DALFilm());
 
-            this.NavigationService.Navigate(frmAbonnes);
+            NavigationService?.Navigate(frmAbonnes);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             FProjections frmProjections = new FProjections();
 
-            this.NavigationService.Navigate(frmProjections);
+            NavigationService?.Navigate(frmProjections);
         }
 
         private void BtnFilm_Click(object sender, RoutedEventArgs e)
         {
-            DALFilm dalFilm = new DALFilm();
-            FFilms frmFilms = new FFilms(dalFilm);
-
-            this.NavigationService.Navigate(frmFilms);
+            FFilms frmFilms = new FFilms(new DALFilm());
+            NavigationService?.Navigate(frmFilms);
         }
 
     }

@@ -35,16 +35,28 @@
         
         <ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" 
                   Grid.RowSpan="3"
-                  Margin="0,0,15,0" SelectionChanged="LstFilms_SelectionChanged"></ListView>
+                  Margin="0,0,15,0" SelectionChanged="LstFilms_SelectionChanged">
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Nom" Width="auto" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn x:Name="GridViewColumnNote" Header="Note moyenne" Width="auto"/>
+                    <GridViewColumn Header="Categorie" Width="auto" />
+
+                </GridView>
+            </ListView.View>
+        </ListView>
 
 
         <!-- Details d'un film -->
-        <TextBlock Grid.Row="1" Grid.Column="3" Text="Nom : "></TextBlock>
-        <TextBox x:Name="NameField" 
-                 Grid.Row="1" Grid.Column="4" Width="150" Grid.ColumnSpan="2"></TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Nom : " Margin="0,2"></TextBlock>
+        <TextBox x:Name="NameField" Margin="0,2"
+                 Grid.Row="1" Grid.Column="4" Width="150" Grid.ColumnSpan="2">
 
-        <TextBlock Grid.Row="2" Grid.Column="3" Text="Catégorie : "></TextBlock>
-        <ComboBox x:Name="CategoryCombobox"
+        </TextBox>
+
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Catégorie : " Margin="0,2"></TextBlock>
+        <ComboBox x:Name="CategoryCombobox" Margin="0,2"
             Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2"></ComboBox>
 
 

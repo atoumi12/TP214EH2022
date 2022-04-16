@@ -20,7 +20,7 @@ namespace MonCine.Data
         public bool SurAffiche { get; set; }
         public List<Acteur> Acteurs { get; set; }
         public List<Realisateur> Realisateurs { get; set; }
-        private List<int> Notes { get; set; }
+        public List<int> Notes { get; set; }
 
         [Range(0, 2, ErrorMessage = "Le nombre de projection d'un film ne peut pas dépasser 2 projections pas années")]
         private int NbProjection { get; set; }
@@ -55,16 +55,20 @@ namespace MonCine.Data
             List<String> enumNames = typeof(Categorie).GetEnumNames().ToList();
             List<Categorie> categories = new List<Categorie>();
 
-            for (int i = 0; i < 5; i++)
-            {
-                int indiceCat = random.Next(enumNames.Count);
-                Categorie cat = (Categorie)indiceCat;
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    int indiceCat = random.Next(enumNames.Count);
+            //    Categorie cat = (Categorie)indiceCat;
 
-                if (!categories.Contains(cat))
-                {
-                    categories.Add(cat);
-                }
-            }
+            //    if (!categories.Contains(cat))
+            //    {
+            //        categories.Add(cat);
+            //    }
+            //}
+
+            int indiceCat = random.Next(enumNames.Count);
+            Categorie cat = (Categorie)indiceCat;
+            categories.Add(cat);
 
             return categories;
         }
@@ -75,6 +79,7 @@ namespace MonCine.Data
         {
             Notes ??= new List<int>();
             int taille = Notes.Count > 0 ? Notes.Count : 1;
+
             return Notes.Sum(x => x) / taille;
         }
 
@@ -100,7 +105,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"{Name} - ({ CalculerMoyennesNotes() }) - {Categories?.Count}";
+            return $"{Name} - ({CalculerMoyennesNotes()}/10) - {Categories?[0]}";
         }
     }
 }

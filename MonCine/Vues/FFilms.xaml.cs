@@ -21,13 +21,13 @@ namespace MonCine.Vues
     {
         private List<Film> Films { get; set; }
         private DALFilm Dal { get; set; }
-        
+
 
         public FFilms(DALFilm pDal)
         {
             InitializeComponent();
             Dal = pDal;
-           
+
 
             InitialConfiguration();
         }
@@ -37,14 +37,20 @@ namespace MonCine.Vues
         /// </summary>
         private void InitialConfiguration()
         {
-            Films = Dal.ReadItems();
-            LstFilms.ItemsSource = Films;
-
+            InitialiseListView();
             PopulateCategory();
 
             BtnDelete.IsEnabled = false;
             BtnUpdate.IsEnabled = false;
             NameField.Text = "";
+        }
+
+        private void InitialiseListView()
+        {
+            Films = Dal.ReadItems();
+            LstFilms.ItemsSource = Films;
+
+            GridViewColumnNote.DisplayMemberBinding = new Binding("CalculerMoyennesNotes");
         }
 
         private void PopulateCategory()
@@ -73,16 +79,17 @@ namespace MonCine.Vues
         /// <param name="e"></param>
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new Accueil());
+            NavigationService?.Navigate(new Accueil());
         }
-        
+
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Film film = (Film)LstFilms.SelectedItem;
-         
+
             NameField.Text = film?.Name;
-            
+            CategoryCombobox.SelectedIndex = film != null ? (int)(Categorie)film?.Categories[0] : -1;
+
             BtnDelete.IsEnabled = film != null;
             BtnUpdate.IsEnabled = film != null;
         }
@@ -93,7 +100,8 @@ namespace MonCine.Vues
         {
             if (NameField.Text.Length == 0)
             {
-                MessageBox.Show("Veuillez remplir les champs nécéssaires", "Création", MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("Veuillez remplir les champs nécéssaires", "Création", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             else
             {
@@ -102,12 +110,10 @@ namespace MonCine.Vues
                 if (result)
                 {
                     RefreshItems();
-                    MessageBox.Show($"Le film {film.Name} a été crée avec succès !", "Création de film", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                    MessageBox.Show($"Le film {film.Name} a été crée avec succès !", "Création de film",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-
             }
-            
         }
 
         private Film CreateFilmToAdd()
@@ -121,7 +127,9 @@ namespace MonCine.Vues
             CategoryCombobox.SelectedIndex = -1;
 
 
-            Film film = new Film(nom,new List<Categorie>(){categorie} );
+            Film film = new Film(nom,
+                new List<Categorie>() { categorie }
+            );
 
             return film;
         }
@@ -132,12 +140,11 @@ namespace MonCine.Vues
         {
             if (LstFilms.SelectedIndex == -1)
             {
-                MessageBox.Show("Veuillez choisir un film pour le modifier", "Modification", 
+                MessageBox.Show("Veuillez choisir un film pour le modifier", "Modification",
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-
                 Film film = (Film)LstFilms.SelectedItem;
                 UpdateFilm(film);
                 var result = await Dal.UpdateItem(film);
@@ -146,18 +153,17 @@ namespace MonCine.Vues
                 {
                     NameField.Text = "";
                     RefreshItems();
-                    MessageBox.Show($"Le film {film.Name} a été mis à jour avec succès !", "Modification", MessageBoxButton.OK, MessageBoxImage.None);
+                    MessageBox.Show($"Le film {film.Name} a été mis à jour avec succès !", "Modification",
+                        MessageBoxButton.OK, MessageBoxImage.None);
                 }
-
             }
         }
 
         private void UpdateFilm(Film pFilm)
         {
             pFilm.Name = NameField.Text;
+            pFilm.Categories[0] = (Categorie)CategoryCombobox.SelectedIndex;
         }
-
-
 
 
         // Delete
@@ -170,7 +176,6 @@ namespace MonCine.Vues
             }
             else
             {
-
                 Film film = (Film)LstFilms.SelectedItem;
                 var result = await Dal.DeleteItem(film);
 
@@ -178,12 +183,10 @@ namespace MonCine.Vues
                 {
                     NameField.Text = "";
                     RefreshItems();
-                    MessageBox.Show($"Le film {film.Name} a été supprimé avec succès !", "Suppression", MessageBoxButton.OK, MessageBoxImage.None);
+                    MessageBox.Show($"Le film {film.Name} a été supprimé avec succès !", "Suppression",
+                        MessageBoxButton.OK, MessageBoxImage.None);
                 }
-
             }
         }
-
-        
     }
 }
