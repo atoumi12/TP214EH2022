@@ -66,17 +66,17 @@ namespace MonCine.Data
             return realisateurs;
         }
 
-        public Task<bool> AddItem(Realisateur pObj)
+        public bool AddItem(Realisateur pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateItem(Realisateur pObj)
+        public bool UpdateItem(Realisateur pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteItem(Realisateur pObj)
+        public bool DeleteItem(Realisateur pObj)
         {
             throw new NotImplementedException();
         }

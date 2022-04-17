@@ -13,9 +13,9 @@ namespace MonCine.Data
 
         List<T> ReadItems();
 
-        Task<bool> AddItem(T pObj);
-        Task<bool> UpdateItem(T pObj);
-        Task<bool> DeleteItem(T pObj);
+        bool AddItem(T pObj);
+        bool UpdateItem(T pObj);
+        bool DeleteItem(T pObj);
 
     }
 }

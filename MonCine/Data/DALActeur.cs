@@ -66,17 +66,17 @@ namespace MonCine.Data
             return acteurs;
         }
 
-        public Task<bool> AddItem(Acteur pObj)
+        public bool AddItem(Acteur pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateItem(Acteur pObj)
+        public bool UpdateItem(Acteur pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteItem(Acteur pObj)
+        public bool DeleteItem(Acteur pObj)
         {
             throw new NotImplementedException();
         }

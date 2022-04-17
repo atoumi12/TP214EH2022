@@ -57,7 +57,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>(CollectionName);
-                films = collection.Aggregate().ToList();
+                films = collection.FindSync(Builders<Film>.Filter.Empty).ToList();
             }
             catch (Exception ex)
             {
@@ -69,7 +69,7 @@ namespace MonCine.Data
         }
 
 
-        public async Task<bool> AddItem(Film pFilm)
+        public bool AddItem(Film pFilm)
         {
             if (pFilm is null)
             {
@@ -79,7 +79,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>(CollectionName);
-                await collection.InsertOneAsync(pFilm);
+                collection.InsertOne(pFilm);
             }
             catch (Exception ex)
             {
@@ -92,7 +92,7 @@ namespace MonCine.Data
             return true;
         }
 
-        public async Task<bool> UpdateItem(Film pFilm)
+        public  bool UpdateItem(Film pFilm)
         {
             if (pFilm is null)
             {
@@ -102,7 +102,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>(CollectionName);
-                await collection.ReplaceOneAsync(x => x.Id == pFilm.Id, pFilm);
+                collection.ReplaceOne(x => x.Id == pFilm.Id, pFilm);
             }
             catch (Exception ex)
             {
@@ -114,7 +114,7 @@ namespace MonCine.Data
             return true;
         }
 
-        public async Task<bool> DeleteItem(Film pFilm)
+        public bool DeleteItem(Film pFilm)
         {
             if (pFilm is null)
             {
@@ -124,7 +124,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Film>(CollectionName);
-                await collection.DeleteOneAsync(Builders<Film>.Filter.Eq(x => x.Id, pFilm.Id));
+                collection.DeleteOne(Builders<Film>.Filter.Eq(x => x.Id, pFilm.Id));
             }
             catch (Exception ex)
             {

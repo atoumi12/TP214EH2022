@@ -118,7 +118,7 @@ namespace MonCine.Vues
 
 
         // Add
-        private async void BtnAdd_Click(object sender, RoutedEventArgs e)
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             if (NameField.Text.Length == 0)
             {
@@ -128,7 +128,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = CreateFilmToAdd();
-                var result = await _DalFilm.AddItem(film);
+                var result = _DalFilm.AddItem(film);
                 if (result)
                 {
                     RefreshItems();
@@ -165,7 +165,7 @@ namespace MonCine.Vues
 
 
         // Update
-        private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (LstFilms.SelectedIndex == -1)
             {
@@ -176,7 +176,7 @@ namespace MonCine.Vues
             {
                 Film film = (Film)LstFilms.SelectedItem;
                 UpdateFilm(film);
-                var result = await _DalFilm.UpdateItem(film);
+                var result =  _DalFilm.UpdateItem(film);
 
                 if (result)
                 {
@@ -196,7 +196,7 @@ namespace MonCine.Vues
 
 
         // Delete
-        private async void BtnDelete_Click(object sender, RoutedEventArgs e)
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (LstFilms.SelectedIndex == -1)
             {
@@ -206,7 +206,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = (Film)LstFilms.SelectedItem;
-                var result = await _DalFilm.DeleteItem(film);
+                var result = _DalFilm.DeleteItem(film);
 
                 if (result)
                 {
