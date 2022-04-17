@@ -11,7 +11,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALFilm()
+        public DALFilm(IMongoClient client = null):base(client)
         {
             CollectionName = "Film";
             AddDefaultFilms();
