@@ -43,17 +43,36 @@ namespace MonCine.Vues
             InitialiseListView();
             PopulateComboBoxes();
 
+            ClearFields();
+
             BtnDelete.IsEnabled = false;
             BtnUpdate.IsEnabled = false;
+        }
+
+        private void ClearFields()
+        {
+            // Vider les champs
             NameField.Text = "";
+            CkbAffiche.IsChecked = false;
+
+
+            CategoryCombobox.SelectedIndex = -1;
+
+            foreach (CheckBox checkBox in ActeurStackPanel.Children)
+            {
+                checkBox.IsChecked = false;
+            }
+
+            foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+            {
+                checkbox.IsChecked = false;
+            }
         }
 
         private void InitialiseListView()
         {
             Films = _DalFilm.ReadItems();
             LstFilms.ItemsSource = Films;
-
-            //GridViewColumnNote.DisplayMemberBinding = new Binding("CalculerMoyennesNotes");
         }
 
         private void PopulateComboBoxes()
@@ -69,14 +88,22 @@ namespace MonCine.Vues
             List<Acteur> acteurs = _DalActeur.ReadItems();
             foreach (Acteur acteur in acteurs)
             {
-                ActeurCombobox.Items.Add(acteur);
+                CheckBox chkb = new CheckBox();
+                chkb.Content = acteur.ToString();
+                chkb.Tag = acteur;
+
+                ActeurStackPanel.Children.Add(chkb);
             }
 
             // Realisateurs
             List<Realisateur> realisateurs = _DalRealisateur.ReadItems();
             foreach (Realisateur realisateur in realisateurs)
             {
-                RealisateurCombobox.Items.Add(realisateur);
+                CheckBox chkb = new CheckBox();
+                chkb.Content = realisateur.ToString();
+                chkb.Tag = realisateur;
+
+                RealisateurStackPanel.Children.Add(chkb);
             }
         }
 
@@ -104,12 +131,27 @@ namespace MonCine.Vues
         {
             Film film = (Film)LstFilms.SelectedItem;
 
-            NameField.Text = film?.Name;
-            CategoryCombobox.SelectedIndex = film != null ? (int)(Categorie)film?.Categories[0] : -1;
+            if (film != null)
+            {
+                NameField.Text = film.Name;
+                CategoryCombobox.SelectedIndex = (int)(Categorie)film?.Categories[0];
 
+                // Acteurs
+                foreach (CheckBox checkbox in ActeurStackPanel.Children)
+                {
+                    Acteur acteurTag = checkbox.Tag as Acteur;
+                    bool exists = film.Acteurs.Exists(acteur => acteur.Id == acteurTag.Id);
+                    checkbox.IsChecked = exists;
+                }
 
-            ActeurCombobox.SelectedIndex = film?.Acteurs.Count > 0 ? _DalActeur.ReadItems().FindIndex(f => f.Id == film.Acteurs[0].Id) :  -1;
-            RealisateurCombobox.SelectedIndex = film?.Realisateurs.Count > 0 ? _DalRealisateur.ReadItems().FindIndex(f => f.Id == film.Realisateurs[0].Id) :  -1;
+                // Realisateurs
+                foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+                {
+                    Realisateur realisateurTag = checkbox.Tag as Realisateur;
+                    bool exists = film.Realisateurs.Exists(realisateur => realisateur.Id == realisateurTag.Id);
+                    checkbox.IsChecked = exists;
+                }
+            }
 
 
             BtnDelete.IsEnabled = film != null;
@@ -127,7 +169,7 @@ namespace MonCine.Vues
             }
             else
             {
-                Film film = CreateFilmToAdd();
+                Film film = GetFilmFromValues();
                 var result = _DalFilm.AddItem(film);
                 if (result)
                 {
@@ -138,27 +180,47 @@ namespace MonCine.Vues
             }
         }
 
-        private Film CreateFilmToAdd()
+        /// <summary>
+        /// Permet de créer un objet film à partir des valeurs saisies dans les champs
+        /// </summary>
+        /// <returns>Film avec les valeurs saisies</returns>
+        private Film GetFilmFromValues()
         {
             // Recuperer les champs
             string nom = NameField.Text;
+            bool surAffiche = CkbAffiche.IsChecked.Value;
+
+
             Categorie categorie = (Categorie)CategoryCombobox.SelectedIndex;
-            Acteur acteur = ActeurCombobox.SelectedItem as Acteur;
-            Realisateur realisateur = RealisateurCombobox.SelectedItem as Realisateur;
 
 
-            // Vider les champs
-            NameField.Text = "";
-            CategoryCombobox.SelectedIndex = -1;
-            ActeurCombobox.SelectedIndex = -1;
-            RealisateurCombobox.SelectedIndex = -1;
+            List<Acteur> acteurs = new List<Acteur>();
+            foreach (CheckBox checkBox in ActeurStackPanel.Children)
+            {
+                if (checkBox.IsChecked.Value)
+                {
+                    acteurs.Add(checkBox.Tag as Acteur);
+                }
+            }
 
+
+            List<Realisateur> realisateurs = new List<Realisateur>();
+            foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+            {
+                if (checkbox.IsChecked.Value)
+                {
+                    realisateurs.Add(checkbox.Tag as Realisateur);
+                }
+            }
+
+
+            ClearFields();
 
             Film film = new Film(nom,
                 new List<Categorie>() { categorie },
-                new List<Acteur>() { acteur },
-                new List<Realisateur>() { realisateur }
-            );
+                acteurs,
+                realisateurs,
+                surAffiche);
 
             return film;
         }
@@ -174,24 +236,20 @@ namespace MonCine.Vues
             }
             else
             {
-                Film film = (Film)LstFilms.SelectedItem;
-                UpdateFilm(film);
-                var result =  _DalFilm.UpdateItem(film);
+                Film selectedFilm = (Film)LstFilms.SelectedItem;
+                Film updatedFilm = GetFilmFromValues();
+                updatedFilm.Id = selectedFilm.Id;
+
+                var result = _DalFilm.UpdateItem(updatedFilm);
 
                 if (result)
                 {
                     NameField.Text = "";
                     RefreshItems();
-                    MessageBox.Show($"Le film {film.Name} a été mis à jour avec succès !", "Modification",
+                    MessageBox.Show($"Le film {updatedFilm.Name} a été mis à jour avec succès !", "Modification",
                         MessageBoxButton.OK, MessageBoxImage.None);
                 }
             }
-        }
-
-        private void UpdateFilm(Film pFilm)
-        {
-            pFilm.Name = NameField.Text;
-            pFilm.Categories[0] = (Categorie)CategoryCombobox.SelectedIndex;
         }
 
 

@@ -26,13 +26,14 @@ namespace MonCine.Data
         private int NbProjection { get; set; }
 
 
-        public Film(string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null, List<Realisateur> pRealisateurs = null)
+        public Film(string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null, List<Realisateur> pRealisateurs = null, bool pSurAffiche=false)
         {
             Name = pName;
             Notes = GenerateNotes();
             Categories = pCategories ?? GenerateCategories();
             Acteurs = pActeurs ?? new List<Acteur>();
             Realisateurs = pRealisateurs ?? new List<Realisateur>();
+            SurAffiche = pSurAffiche;
         }
 
 
