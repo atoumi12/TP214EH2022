@@ -18,8 +18,6 @@ namespace MonCine.Data
         }
 
 
-        #region DEV
-
         /// <summary>
         /// Populer la collections film au départ
         /// </summary>
@@ -47,38 +45,6 @@ namespace MonCine.Data
             }
         }
 
-   
-        private async void AddDefaultActeursRealisateurs()
-        {
-            
-
-            List<Realisateur> realisateurs = new List<Realisateur>
-            {
-                new Realisateur("R-Jane", "Doe"),
-                new Realisateur("R-Jack", "Jones"),
-                new Realisateur("R-Jane", "Doe")
-            };
-
-            try
-            {
-                var collectionRealisateur = database.GetCollection<Realisateur>("Realisateur");
-                if (collectionRealisateur.CountDocuments(Builders<Realisateur>.Filter.Empty) <= 0)
-                {
-                    await collectionRealisateur.InsertManyAsync(realisateurs);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Impossible d'ajouter les réalisateurs et les acteurs dans la base de donnée [ {ex.Message} ]",
-                    "Erreur de chargement de BD",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                throw;
-            }
-        }
-
-        #endregion
 
         /// <summary>
         /// Récupère l'ensemble des films de la BD

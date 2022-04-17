@@ -21,21 +21,24 @@ namespace MonCine.Vues
     {
         private List<Film> Films { get; set; }
         private DALFilm _DalFilm { get; set; }
+        private DALActeur _DalActeur { get; set; }
+        private DALRealisateur _DalRealisateur { get; set; }
 
 
-        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur)
+        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur)
         {
-            InitializeComponent();
             _DalFilm = pDalFilm;
+            _DalActeur = pDalActeur;
+            _DalRealisateur = pDalRealisateur;
 
-
-            InitialConfiguration();
+            InitializeComponent();
+            InitialItemConfiguration();
         }
 
         /// <summary>
         /// Définit l'état inital du form
         /// </summary>
-        private void InitialConfiguration()
+        private void InitialItemConfiguration()
         {
             InitialiseListView();
             PopulateComboBoxes();
@@ -63,7 +66,18 @@ namespace MonCine.Vues
             }
 
             // Acteurs
-            //List<String>
+            List<Acteur> acteurs = _DalActeur.ReadItems();
+            foreach (Acteur acteur in acteurs)
+            {
+                ActeurCombobox.Items.Add(acteur);
+            }
+
+            // Realisateurs
+            List<Realisateur> realisateurs = _DalRealisateur.ReadItems();
+            foreach (Realisateur realisateur in realisateurs)
+            {
+                RealisateurCombobox.Items.Add(realisateur);
+            }
         }
 
 
@@ -92,6 +106,11 @@ namespace MonCine.Vues
 
             NameField.Text = film?.Name;
             CategoryCombobox.SelectedIndex = film != null ? (int)(Categorie)film?.Categories[0] : -1;
+
+
+            ActeurCombobox.SelectedIndex = film?.Acteurs.Count > 0 ? _DalActeur.ReadItems().FindIndex(f => f.Id == film.Acteurs[0].Id) :  -1;
+            RealisateurCombobox.SelectedIndex = film?.Realisateurs.Count > 0 ? _DalRealisateur.ReadItems().FindIndex(f => f.Id == film.Realisateurs[0].Id) :  -1;
+
 
             BtnDelete.IsEnabled = film != null;
             BtnUpdate.IsEnabled = film != null;
@@ -124,14 +143,21 @@ namespace MonCine.Vues
             // Recuperer les champs
             string nom = NameField.Text;
             Categorie categorie = (Categorie)CategoryCombobox.SelectedIndex;
+            Acteur acteur = ActeurCombobox.SelectedItem as Acteur;
+            Realisateur realisateur = RealisateurCombobox.SelectedItem as Realisateur;
+
 
             // Vider les champs
             NameField.Text = "";
             CategoryCombobox.SelectedIndex = -1;
+            ActeurCombobox.SelectedIndex = -1;
+            RealisateurCombobox.SelectedIndex = -1;
 
 
             Film film = new Film(nom,
-                new List<Categorie>() { categorie }
+                new List<Categorie>() { categorie },
+                new List<Acteur>() { acteur },
+                new List<Realisateur>() { realisateur }
             );
 
             return film;

@@ -54,7 +54,7 @@ namespace MonCine.Data
 
             try
             {
-                var collection = database.GetCollection<Acteur>("Acteur");
+                var collection = database.GetCollection<Acteur>(CollectionName);
                 acteurs = collection.Aggregate().ToList();
             }
             catch (Exception ex)

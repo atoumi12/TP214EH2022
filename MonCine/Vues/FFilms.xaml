@@ -27,6 +27,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
             <RowDefinition Height="40" />
@@ -38,7 +39,7 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"
                    Text="Liste des films" FontSize="25" FontWeight="Bold" />
 
-        <ListView x:Name="LstFilms" Grid.Row="2" Grid.Column="1" Grid.RowSpan="4"
+        <ListView x:Name="LstFilms" Grid.Row="2" Grid.Column="1" Grid.RowSpan="6"
                   SelectionChanged="LstFilms_SelectionChanged">
 
             <!--<ListView.View>
@@ -66,9 +67,17 @@
         <ComboBox x:Name="ActeurCombobox" Grid.Row="4" Grid.Column="4"
                   Margin="0,5,0,0"/>
 
+        <TextBlock Grid.Row="5" Grid.Column="3" Text="Réalisateur : " FontWeight="DemiBold" 
+                   Margin="0,5,0,0"/>
+        <ComboBox x:Name="RealisateurCombobox" Grid.Row="5" Grid.Column="4"
+                  Margin="0,5,0,0"/>
+
+
+
+
 
         <!-- Actions -->
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="3"
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="7" Grid.ColumnSpan="3"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
             <Button x:Name="BtnAdd" VerticalAlignment="Center" Width="100" Margin="0,0,10,0"
