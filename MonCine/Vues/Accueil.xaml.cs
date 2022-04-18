@@ -34,7 +34,7 @@ namespace MonCine.Vues
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FProjections frmProjections = new FProjections();
+            FProjections frmProjections = new FProjections(new DALFilm(), new DALSalle(), new DALProjection());
 
             this.NavigationService.Navigate(frmProjections);
         }

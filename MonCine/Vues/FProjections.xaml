@@ -6,7 +6,64 @@
         xmlns:local="clr-namespace:MonCine.Vues"
         mc:Ignorable="d"
         Title="Projections" Height="450" Width="800">
-    <Grid>
+
+    
+        <Grid ShowGridLines="False" Background="AliceBlue" Margin="-5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="20" Height="auto" />
         
+        <!--<ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" 
+                  Grid.RowSpan="3"
+                  Margin="0,0,15,0" SelectionChanged="LstFilms_SelectionChanged"></ListView>-->
+
+
+        <!-- Details d'un film -->
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Film : "></TextBlock>
+        <ComboBox x:Name="FilmCombobox"
+            Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
+
+            
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Salle : "></TextBlock>
+        <ComboBox x:Name="SalleCombobox"
+            Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
+
+
+        <!--<TextBlock Grid.Row="3" Grid.Column="1" Text="Date : "></TextBlock>
+        <DatePicker Grid.Row="3" Grid.Column="2"></DatePicker>-->
+            
+
+        <Button x:Name="BtnAdd" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="1"
+                
+                Content="Créer" Click="BtnAdd_Click"></Button>
+
+        <!--<Button x:Name="BtnDelete" Grid.Row="4" Grid.Column="5"
+                Margin="2,0" 
+                Content="Supprimer" Click="BtnDelete_Click"
+                FontSize="18"></Button>
+
+        <Button x:Name="BtnUpdate" Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="3"
+                Margin="2,0"
+                Content="Modifier" Click="BtnUpdate_Click" 
+                FontSize="18"></Button>-->
+        
+
+
     </Grid>
 </Page>
