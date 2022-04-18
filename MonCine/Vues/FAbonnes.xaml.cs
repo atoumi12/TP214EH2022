@@ -19,13 +19,13 @@ namespace MonCine.Vues
     public partial class FAbonnes : Page
     {
         private List<Abonne> abonnes;
-        private DAL Dal { get; set; }
+        private DALAbonne Dal { get; set; }
 
 
-        public FAbonnes(DAL dal)
+        public FAbonnes(DALAbonne dal)
         {
             InitializeComponent();
-            abonnes = dal.ReadAbonnes();
+            abonnes = dal.ReadItems();
             Dal = dal;
             LstAbonnes.ItemsSource = abonnes;
 
