@@ -17,7 +17,7 @@ namespace MonCine.Data
             AddDefaultsalle();
 
         }
-        private async void AddDefaultsalle()
+        private  void AddDefaultsalle()
         {
             List<Salle> salles = new List<Salle>
             {
@@ -31,7 +31,7 @@ namespace MonCine.Data
                 var collection = database.GetCollection<Salle>(CollectionName);
                 if (collection.CountDocuments(Builders<Salle>.Filter.Empty) <= 0)
                 {
-                    await collection.InsertManyAsync(salles);
+                     collection.InsertManyAsync(salles);
                 }
             }
             catch (Exception ex)
@@ -43,7 +43,7 @@ namespace MonCine.Data
             }
         }
 
-        public async Task<bool> AddItem(Salle pSalle)
+        public  bool AddItem(Salle pSalle)
         {
             if (pSalle is null)
             {
@@ -53,7 +53,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Salle>(CollectionName);
-                await collection.InsertOneAsync(pSalle);
+                collection.InsertOneAsync(pSalle);
             }
             catch (Exception ex)
             {
@@ -67,12 +67,12 @@ namespace MonCine.Data
         }
 
 
-        public Task<bool> UpdateItem(Projection pObj)
+        public bool UpdateItem(Projection pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteItem(Projection pObj)
+        public bool DeleteItem(Projection pObj)
         {
             throw new NotImplementedException();
         }
@@ -95,12 +95,12 @@ namespace MonCine.Data
             return salles;
         }
 
-        public Task<bool> UpdateItem(Salle pObj)
+        public bool UpdateItem(Salle pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteItem(Salle pObj)
+        public bool DeleteItem(Salle pObj)
         {
             throw new NotImplementedException();
         }

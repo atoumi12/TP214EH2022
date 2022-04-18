@@ -31,7 +31,7 @@ namespace MonCine.Data
 
 
 
-        public async Task<bool> AddItem(Projection pProjection)
+        public bool AddItem(Projection pProjection)
         {
             if (pProjection is null)
             {
@@ -41,7 +41,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Projection>(CollectionName);
-                await collection.InsertOneAsync(pProjection);
+                collection.InsertOneAsync(pProjection);
             }
             catch (Exception ex)
             {
@@ -55,12 +55,12 @@ namespace MonCine.Data
         }
 
 
-        public Task<bool> UpdateItem(Projection pObj)
+        public bool UpdateItem(Projection pObj)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteItem(Projection pObj)
+        bool ICRUD<Projection>.DeleteItem(Projection pObj)
         {
             throw new NotImplementedException();
         }

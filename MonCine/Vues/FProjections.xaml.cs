@@ -77,13 +77,13 @@ namespace MonCine.Vues
 
         }
 
-        private async void BtnAdd_Click(object sender, RoutedEventArgs e)
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
 
                 Projection projection = CreateProjectionToAdd();
 
 
-                var result = await Dal.AddItem(projection);
+                var result =  Dal.AddItem(projection);
                 if (result)
                 {
                     MessageBox.Show($"La projection a été crée avec succès !", "Création de projection", MessageBoxButton.OK, MessageBoxImage.Information);

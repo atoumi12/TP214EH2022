@@ -71,14 +71,5 @@ namespace MonCine.Data
             return abonnes;
         }
 
-
-
-
-
-
-
-
-
-
     }
 }
