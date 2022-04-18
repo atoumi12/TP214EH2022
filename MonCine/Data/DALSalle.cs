@@ -83,7 +83,7 @@ namespace MonCine.Data
 
             try
             {
-                var collection = database.GetCollection<Salle>("Salle");
+                var collection = database.GetCollection<Salle>(CollectionName);
                 salles = collection.Aggregate().ToList();
             }
             catch (Exception ex)
