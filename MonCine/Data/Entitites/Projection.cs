@@ -18,6 +18,7 @@ namespace MonCine.Data
         {
             Salle = salle;
             Film = film;
+            DateDebut = DateTime.Now;
         }
 
 
@@ -35,6 +36,11 @@ namespace MonCine.Data
         public DateTime consulterHoraire()
         {
             return DateTime.Now;
+        }
+
+        public override string ToString()
+        {
+            return $"Salle : {Salle} - {DateDebut.ToShortTimeString()}";
         }
     }
 }

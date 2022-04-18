@@ -54,6 +54,30 @@ namespace MonCine.Data
             return true;
         }
 
+        public List<Projection> GetProjectionsOfFilm(Film pFilm)
+        {
+            if (pFilm is null)
+            {
+                throw new ArgumentNullException("pFilm", "Le film ne peut pas être null");
+            }
+
+            List<Projection> projections = new List<Projection>();
+            try
+            {
+                var collection = database.GetCollection<Projection>(CollectionName);
+                projections = collection.Find(Builders<Projection>.Filter.Eq(x=>x.Film.Id , pFilm.Id)).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible d'ajouter la projection {pFilm.Id} dans la collection {ex.Message}",
+                    "Erreur d'ajout", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                throw;
+            }
+
+            return projections;
+        }
+
 
         public bool UpdateItem(Projection pObj)
         {

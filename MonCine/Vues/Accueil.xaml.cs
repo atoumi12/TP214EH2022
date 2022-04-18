@@ -41,7 +41,7 @@ namespace MonCine.Vues
 
         private void BtnFilm_Click(object sender, RoutedEventArgs e)
         {
-            FFilms frmFilms = new FFilms(new DALFilm(),  new DALActeur(), new DALRealisateur());
+            FFilms frmFilms = new FFilms(new DALFilm(),  new DALActeur(), new DALRealisateur(), new DALProjection());
             NavigationService?.Navigate(frmFilms);
         }
 

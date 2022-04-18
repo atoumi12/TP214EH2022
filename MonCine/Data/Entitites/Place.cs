@@ -8,5 +8,11 @@ namespace MonCine.Data
     {
         private int Numero { get; set; }
         private bool Disponible { get; set; }
+
+        public Place(int pNumero)
+        {
+            Numero = pNumero;
+            Disponible = true;
+        }
     }
 }

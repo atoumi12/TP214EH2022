@@ -23,13 +23,15 @@ namespace MonCine.Vues
         private DALFilm _DalFilm { get; set; }
         private DALActeur _DalActeur { get; set; }
         private DALRealisateur _DalRealisateur { get; set; }
+        private DALProjection _dalProjection { get; set; }
 
 
-        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur)
+        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur, DALProjection pDalProjection)
         {
             _DalFilm = pDalFilm;
             _DalActeur = pDalActeur;
             _DalRealisateur = pDalRealisateur;
+            _dalProjection = pDalProjection;
 
             InitializeComponent();
 
@@ -157,6 +159,7 @@ namespace MonCine.Vues
 
             BtnDelete.IsEnabled = film != null;
             BtnUpdate.IsEnabled = film != null;
+            BtnAfficherProjections.IsEnabled = film != null;
         }
 
 
@@ -275,6 +278,28 @@ namespace MonCine.Vues
                         MessageBoxButton.OK, MessageBoxImage.None);
                 }
             }
+        }
+
+        /// <summary>
+        /// Accède à la fenêtre des projections
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAfficherProjections_Click(object sender, RoutedEventArgs e)
+        {
+            Film film = LstFilms.SelectedItem as Film;
+            if (film is null)
+            {
+                MessageBox.Show("Veuillez sélectionnez un film");
+            }
+            else
+            {
+                FProjectionFilm projectionFilm = new FProjectionFilm(_dalProjection, film);
+                projectionFilm.Show();
+            }
+
+           
+            
         }
     }
 }
