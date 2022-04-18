@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace MonCine.Data
 {
-    class DALAbonne : DAL, ICRUD<Abonne>
+    public class DALAbonne : DAL, ICRUD<Abonne>
     {
         public string CollectionName { get; set; }
 
