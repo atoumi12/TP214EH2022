@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace MonCine.Data
+{
+    public class Salle
+    {
+        [BsonId]  private ObjectId Id { get; set;}
+        private int NumSale { get; set; }
+        private Place Place { get; set; }
+
+
+        public Salle(int pnumSale)
+        {
+            NumSale = pnumSale;
+        }
+    }
+
+
+}
