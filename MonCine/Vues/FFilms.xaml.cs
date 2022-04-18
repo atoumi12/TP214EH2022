@@ -32,7 +32,8 @@ namespace MonCine.Vues
             _DalRealisateur = pDalRealisateur;
 
             InitializeComponent();
-            InitialItemConfiguration();
+
+            this.InitialItemConfiguration();
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace MonCine.Vues
         private void InitialItemConfiguration()
         {
             InitialiseListView();
-            PopulateComboBoxes();
+            PopulateCheckBoxesInStackPannel();
 
             ClearFields();
 
@@ -75,7 +76,7 @@ namespace MonCine.Vues
             LstFilms.ItemsSource = Films;
         }
 
-        private void PopulateComboBoxes()
+        private void PopulateCheckBoxesInStackPannel()
         {
             // Categorie
             List<String> categories = typeof(Categorie).GetEnumNames().ToList();
@@ -109,7 +110,7 @@ namespace MonCine.Vues
 
 
         /// <summary>
-        /// Permet de mettre à jour les données des éléments affichés
+        /// Permet de mettre à jour les données des éléments affichés et récupérer la nouvelle liste des films
         /// </summary>
         private void RefreshItems()
         {
