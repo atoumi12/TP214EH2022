@@ -11,6 +11,12 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
+
+        public DALAbonne()
+        {
+            CollectionName = "Abonne";
+            AddDefaultAbo();
+        }
         public bool AddItem(Abonne pObj)
         {
             throw new NotImplementedException();
@@ -27,7 +33,7 @@ namespace MonCine.Data
 
             try
             {
-                var collection = database.GetCollection<Abonne>("Abonnes");
+                var collection = database.GetCollection<Abonne>(CollectionName);
                 abonnes = collection.Aggregate().ToList();
             }
             catch (Exception ex)
@@ -55,8 +61,7 @@ namespace MonCine.Data
 
             try
             {
-                database.DropCollection("Abonnes");
-                var collection = database.GetCollection<Abonne>("Abonnes");
+                var collection = database.GetCollection<Abonne>(CollectionName);
                 if (collection.CountDocuments(Builders<Abonne>.Filter.Empty) <= 0)
                 {
                     await collection.InsertManyAsync(abonnes);

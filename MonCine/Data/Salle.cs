@@ -17,6 +17,11 @@ namespace MonCine.Data
         {
             NumSale = pnumSale;
         }
+
+        public override string ToString()
+        {
+            return $"Salle num {NumSale}";
+        }
     }
 
 

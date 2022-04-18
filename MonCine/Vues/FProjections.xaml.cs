@@ -45,10 +45,10 @@ namespace MonCine.Vues
         {
             Films = DalFilm.ReadItems();
             Salles = DalSalle.ReadItems();
-            PopulateCategory();
+            PopulateComboBoxes();
         }
 
-        private void PopulateCategory()
+        private void PopulateComboBoxes()
         {
 
             foreach (Film film in Films)
@@ -99,6 +99,10 @@ namespace MonCine.Vues
 
         }
 
+        private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new Accueil());
 
+        }
     }
 }

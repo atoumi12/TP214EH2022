@@ -35,10 +35,11 @@ namespace MonCine.Vues
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new Accueil());
+            NavigationService?.Navigate(new Accueil());
+
         }
 
-        
+
         private void LstAbonnes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //Abonne abonne = (Abonne)LstAbonnes.SelectedItem;

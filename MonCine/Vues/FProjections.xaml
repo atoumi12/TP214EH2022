@@ -27,7 +27,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="20" Height="auto" />
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="20" Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown" />
         
         <!--<ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" 
                   Grid.RowSpan="3"
