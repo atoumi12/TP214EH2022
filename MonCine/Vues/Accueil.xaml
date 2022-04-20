@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Accueil">
 
-    <Grid ShowGridLines="True" Background="AliceBlue" Margin="0,0,0,-6">
+    <Grid ShowGridLines="False" Background="AliceBlue" Margin="0,0,0,-6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>

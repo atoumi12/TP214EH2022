@@ -21,6 +21,7 @@ namespace MonCine.Vues
     {
         private DALProjection dalProjection { get; set; }
         private List<Projection> projections { get; set; }
+        private Film FilmChoisi { get; set; } 
 
 
         public FProjectionFilm(DALProjection pDalProjection, Film pFilm)
@@ -28,9 +29,20 @@ namespace MonCine.Vues
             InitializeComponent();
 
             dalProjection = pDalProjection;
-            projections = pDalProjection.GetProjectionsOfFilm(pFilm);
+            FilmChoisi = pFilm;
+
+            InitialConfiguration();
+        }
+
+        private void InitialConfiguration()
+        {
+            txtFilmName.Text = $"{FilmChoisi.Name}";
+
+            projections = dalProjection.GetProjectionsOfFilm(FilmChoisi);
 
             ProjectionsListView.ItemsSource = projections;
+
+
         }
     }
 }

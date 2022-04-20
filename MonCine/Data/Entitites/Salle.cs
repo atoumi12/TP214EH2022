@@ -20,7 +20,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"Salle num {NumSale}";
+            return $"Salle (N°{NumSale})";
         }
     }
 

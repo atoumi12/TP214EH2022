@@ -36,7 +36,7 @@ namespace MonCine.Vues
 
             InitializeComponent();
 
-            this.InitialItemConfiguration();
+            InitialItemConfiguration();
         }
 
         /// <summary>
@@ -86,6 +86,9 @@ namespace MonCine.Vues
         }
 
 
+        /// <summary>
+        /// Permet de populer l'ensemble des checkbox (Catégorie, Acteur, Réalisateur)
+        /// </summary>
         private void PopulateCheckBoxesInStackPannel()
         {
             // Categorie
@@ -94,11 +97,11 @@ namespace MonCine.Vues
             {
                 StackPanel sp = new StackPanel();
                 sp.Orientation = Orientation.Horizontal;
-                sp.Margin = new Thickness(5);
+                sp.Margin = new Thickness(0,2,0,2);
                 for (int j = i; j < i + 3; j++)
                 {
                     CheckBox cb = new CheckBox();
-                    cb.Margin = new Thickness(5, 0, 5, 0);
+                    cb.Margin = new Thickness(2, 0, 2, 0);
                     cb.Content = categories[j];
                     sp.Children.Add(cb);
                 }
@@ -182,6 +185,8 @@ namespace MonCine.Vues
                     bool exists = film.Realisateurs.Exists(realisateur => realisateur.Id == realisateurTag.Id);
                     checkbox.IsChecked = exists;
                 }
+
+                CkbAffiche.IsChecked = film.SurAffiche;
             }
 
 
@@ -189,29 +194,6 @@ namespace MonCine.Vues
             BtnUpdate.IsEnabled = film != null;
             BtnAfficherProjections.IsEnabled = film != null;
         }
-
-
-        // Add
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (NameField.Text.Length == 0)
-            {
-                MessageBox.Show("Veuillez remplir les champs nécéssaires", "Création", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            else
-            {
-                Film film = GetFilmFromValues();
-                var result = _dalFilm.AddItem(film);
-                if (result)
-                {
-                    RefreshItems();
-                    MessageBox.Show($"Le film {film.Name} a été crée avec succès !", "Création de film",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-
 
         /// <summary>
         /// Permet de créer un objet film à partir des valeurs saisies dans les champs
@@ -274,7 +256,114 @@ namespace MonCine.Vues
 
 
 
-        // Update
+        /// <summary>
+        /// Permet la création d'un film
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var (valide, erreurs) = FilmIsValid();
+
+            if (!valide)
+            {
+                MessageBox.Show($"Veuillez remplir les champs nécéssaires \n\n\n{erreurs}", "Création d'un film", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                Film film = GetFilmFromValues();
+                var result = _dalFilm.AddItem(film);
+                if (result)
+                {
+                    RefreshItems();
+                    MessageBox.Show($"Le film {film.Name} a été crée avec succès !", "Création de film",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+
+        private (bool, string) FilmIsValid()
+        {
+            bool valide = true;
+            string erreurs = "";
+            
+            // Nom
+            if (NameField.Text.Length == 0)
+            {
+                erreurs += " - Veuillez remplir le nom du film \n";
+            }
+
+            // Categories
+            int nbCategories = 0;
+            foreach (StackPanel sp in CategoryStackPanel.Children)
+            {
+                foreach (CheckBox checkBox in sp.Children)
+                {
+                    if (checkBox.IsChecked.Value)
+                    {
+                        nbCategories++;
+                    }
+                }
+            }
+
+            if (nbCategories <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins une catégorie du film \n";
+            }
+
+            // Acteurs
+            int nbActeurs = 0;
+            foreach (CheckBox checkBox in ActeurStackPanel.Children)
+            {
+                if (checkBox.IsChecked.Value)
+                {
+                    nbActeurs++;
+                }
+            }
+
+            if (nbActeurs <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins un acteur pour le film \n";
+            }
+
+
+            // Realisateurs
+            int nbRealisateurs = 0;
+            foreach (CheckBox checkBox in ActeurStackPanel.Children)
+            {
+                if (checkBox.IsChecked.Value)
+                {
+                    nbRealisateurs++;
+                }
+            }
+
+            if (nbRealisateurs <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins un réalisateur pour le film \n";
+            }
+
+
+
+            if (!string.IsNullOrWhiteSpace(erreurs))
+            {
+                valide = false;
+            }
+
+            return (valide, erreurs);
+        }
+
+
+
+       
+
+
+        /// <summary>
+        /// Permet la mise à jour d'un film
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (LstFilms.SelectedIndex == -1)
@@ -302,7 +391,11 @@ namespace MonCine.Vues
 
 
 
-        // Delete
+        /// <summary>
+        /// Permet la suppression d'un film
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (LstFilms.SelectedIndex == -1)
@@ -338,7 +431,7 @@ namespace MonCine.Vues
             Film film = LstFilms.SelectedItem as Film;
             if (film is null)
             {
-                MessageBox.Show("Veuillez sélectionnez un film");
+                MessageBox.Show("Veuillez sélectionnez un film", "Affichage de projection", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {

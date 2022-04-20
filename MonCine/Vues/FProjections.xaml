@@ -1,68 +1,61 @@
 ﻿<Page x:Class="MonCine.Vues.FProjections"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MonCine.Vues"
-        mc:Ignorable="d"
-        Title="Projections" Height="450" Width="800">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:MonCine.Vues"
+      mc:Ignorable="d"
+      Title="Projections" Height="450" Width="800" FontSize="18">
 
-    
-        <Grid ShowGridLines="False" Background="AliceBlue" Margin="-5">
+
+    <Grid ShowGridLines="False" Background="AliceBlue" Margin="-5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="190" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+
+            <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="40" />
+
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="20" Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown" />
-        
-        <!--<ListView x:Name="LstFilms" Grid.Row="1" Grid.Column="1" 
-                  Grid.RowSpan="3"
-                  Margin="0,0,15,0" SelectionChanged="LstFilms_SelectionChanged"></ListView>-->
+        <Image x:Name="BtnReturn" Grid.Row="0" Grid.Column="0" Source="../Ressources/Images/back_arrow.png" Width="20"
+               Height="auto" MouseLeftButtonDown="BtnReturn_MouseLeftButtonDown" />
 
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Ajout de projection" Grid.ColumnSpan="2"
+                   FontWeight="Bold" FontSize="20" Margin="0,0,0,10">
+        </TextBlock>
 
         <!-- Details d'un film -->
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Film : "></TextBlock>
-        <ComboBox x:Name="FilmCombobox"
-            Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
-
-            
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Salle : "></TextBlock>
-        <ComboBox x:Name="SalleCombobox"
-            Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Film : " FontWeight="DemiBold"></TextBlock>
+        <ComboBox x:Name="FilmCombobox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"></ComboBox>
 
 
-        <!--<TextBlock Grid.Row="3" Grid.Column="1" Text="Date : "></TextBlock>
-        <DatePicker Grid.Row="3" Grid.Column="2"></DatePicker>-->
-            
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Salle : " FontWeight="DemiBold"></TextBlock>
+        <ComboBox x:Name="SalleCombobox" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"
+                  Margin="0,2,0,0"></ComboBox>
 
-        <Button x:Name="BtnAdd" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="1"
-                
-                Content="Créer" Click="BtnAdd_Click"></Button>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="Date de projection : " FontWeight="DemiBold"></TextBlock>
+        <DatePicker x:Name="DatePickerProjection" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" FontSize="15" 
+                    Margin="0,5,0,0"></DatePicker>
+       
 
-        <!--<Button x:Name="BtnDelete" Grid.Row="4" Grid.Column="5"
-                Margin="2,0" 
-                Content="Supprimer" Click="BtnDelete_Click"
-                FontSize="18"></Button>
 
-        <Button x:Name="BtnUpdate" Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="3"
-                Margin="2,0"
-                Content="Modifier" Click="BtnUpdate_Click" 
-                FontSize="18"></Button>-->
-        
+        <Button x:Name="BtnAdd" Grid.Row="7" Grid.Column="2"
+                Content="Créer" Click="BtnAdd_Click">
+        </Button>
 
 
     </Grid>

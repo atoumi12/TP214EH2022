@@ -14,18 +14,18 @@ namespace MonCine.Data
         public Film Film { get; set; }
         
 
-        public Projection(Salle salle, Film film)
+        public Projection(Salle salle, Film film, DateTime pDate)
         {
             Salle = salle;
             Film = film;
-            DateDebut = DateTime.Now.ToLocalTime();
+            DateDebut = pDate;
         }
 
 
 
         public Projection selectionnerProjection()
         {
-            return null;
+            return this;
         }
 
         public bool encorePlaceDisponible()
@@ -40,7 +40,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"Salle : {Salle} - {DateDebut.ToUniversalTime()}";
+            return $"Salle : {Salle} - {DateDebut.ToShortDateString()}";
         }
     }
 }

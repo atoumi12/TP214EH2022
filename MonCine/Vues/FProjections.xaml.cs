@@ -35,7 +35,6 @@ namespace MonCine.Vues
             DalFilm = pDalFilm;
             DalSalle = pDalSalle;
             InitialConfiguration();
-
         }
 
         /// <summary>
@@ -50,11 +49,11 @@ namespace MonCine.Vues
 
         private void PopulateComboBoxes()
         {
-
             foreach (Film film in Films)
             {
                 FilmCombobox.Items.Add(film);
             }
+
             foreach (Salle salle in Salles)
             {
                 SalleCombobox.Items.Add(salle);
@@ -65,44 +64,42 @@ namespace MonCine.Vues
         {
             Salle salle = (Salle)SalleCombobox.SelectedItem;
             Film film = (Film)FilmCombobox.SelectedItem;
+            DateTime date = DatePickerProjection.SelectedDate.Value;
 
+            FilmCombobox.SelectedIndex = -1;
+            SalleCombobox.SelectedIndex = -1;
+            DatePickerProjection.SelectedDate = null;
 
-            Projection projection = new Projection(salle,film);
+            Projection projection = new Projection(salle, film, date);
 
             return projection;
         }
 
-        private void FilmCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 && DatePickerProjection.SelectedDate != null;
+            if (!champsRemplis)
+            {
+                MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
                 Projection projection = CreateProjectionToAdd();
+                var result = Dal.AddItem(projection);
 
-
-                var result =  Dal.AddItem(projection);
                 if (result)
                 {
-                    MessageBox.Show($"La projection a été crée avec succès !", "Création de projection", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                }
-
-            
+                    MessageBox.Show($"La projection a été crée avec succès !", "Création de projection",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                } 
+            }
+           
         }
 
-
-        private void SalleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new Accueil());
-
         }
     }
 }

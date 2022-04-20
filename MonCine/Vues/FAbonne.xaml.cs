@@ -18,17 +18,11 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FAbonne : Page
     {
-        private List<Abonne> abonnes;
-        private DAL Dal { get; set; }
-        private Abonne abonne;
 
-        public FAbonne(DAL dal, Abonne unAbonne)
+        public FAbonne(Abonne pAbonne)
         {
             InitializeComponent();
-            abonnes = dal.ReadAbonnes();
-            Dal = dal;
-            abonne = unAbonne;
-            InitialConfiguration();
+            InitialConfiguration(pAbonne);
         }
 
 
@@ -36,84 +30,35 @@ namespace MonCine.Vues
         /// <summary>
         /// Définit l'état inital du form
         /// </summary>
-        private void InitialConfiguration()
+        private void InitialConfiguration(Abonne pAbonne)
         {
-            UserInfos.Text = $"{abonne.FirstName} {abonne.LastName} :" +
+            UserInfos.Text = $"Nom et Prénom : {pAbonne.FirstName} {pAbonne.LastName}" +
                 $"\n" +
                 $"\n" +
-                $"Acteur favorie : {abonne.ActeurFavorie}" +
+                $"Acteur favorie : {pAbonne.ActeurFavorie}" +
                 $"\n" +
                 $"\n" +
-                $"Realisateur favorie : {abonne.RealisateurFavorie}" +
+                $"Realisateur favorie : {pAbonne.RealisateurFavorie}" +
                 $"\n" +
                 $"\n" +
-                $"Seance assister : {abonne.nbSeanceAssistees}";
+                $"Seance assister : {pAbonne.nbSeanceAssistees}";
+
+            DisableButtons();
+
+        }
+
+        private void DisableButtons()
+        {
+            BtnDelete.IsEnabled = false;
+            BtnUpdate.IsEnabled = false;
+            BtnOffrirReconpense.IsEnabled = false;
         }
 
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new FAbonnes(new DALAbonne()));
+            NavigationService?.Navigate(new FAbonnes(new DALAbonne()));
         }
 
-
-
-        private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
-        {
-        //    if (LstAbonnes.SelectedIndex == -1)
-        //    {
-        //        MessageBox.Show("Veuillez choisir un Abonne pour le modifier", "Erreur",
-        //            MessageBoxButton.OK, MessageBoxImage.Information);
-        //    }
-        //    else
-        //    {
-
-        //        //Abonne abonne = (Abonne)LstAbonnes.SelectedItem;
-        //        //UpdateAbonne(abonne);
-        //        //var result = await Dal.UpdateAbonne(abonne);
-
-        //        //if (result)
-        //        //{
-        //        //    NameField.Text = "";
-        //        //    UpdateItems();
-        //        //    MessageBox.Show($"Le film {abonne.Username} a été mis à jour avec succès !", "Modification", MessageBoxButton.OK, MessageBoxImage.None);
-        //        //}
-
-        //    }
-        }
-
-        private void UpdateAbonne(Abonne pAbonne)
-        {
-            //pAbonne.Username = NameField.Text;
-        }
-
-        /// <summary>
-        /// Permet de mettre à jour les données des éléments affichés
-        /// </summary>
-        private void UpdateItems()
-        {
-           // LstAbonnes.ItemsSource = Dal.ReadAbonnes();
-        }
-
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        public override string ToString()
-        {
-            return $"{Name}";
-        }
-
-        private void NameField_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-
-        }
-
-        private void BtnOffrirReconpense_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
