@@ -20,17 +20,18 @@ namespace MonCine.Vues
     public partial class FFilms : Page
     {
         private List<Film> Films { get; set; }
-        private DALFilm _DalFilm { get; set; }
-        private DALActeur _DalActeur { get; set; }
-        private DALRealisateur _DalRealisateur { get; set; }
+        private DALFilm _dalFilm { get; set; }
+        private DALActeur _dalActeur { get; set; }
+        private DALRealisateur _dalRealisateur { get; set; }
         private DALProjection _dalProjection { get; set; }
 
 
-        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur, DALProjection pDalProjection)
+        public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur,
+            DALProjection pDalProjection)
         {
-            _DalFilm = pDalFilm;
-            _DalActeur = pDalActeur;
-            _DalRealisateur = pDalRealisateur;
+            _dalFilm = pDalFilm;
+            _dalActeur = pDalActeur;
+            _dalRealisateur = pDalRealisateur;
             _dalProjection = pDalProjection;
 
             InitializeComponent();
@@ -59,7 +60,13 @@ namespace MonCine.Vues
             CkbAffiche.IsChecked = false;
 
 
-            CategoryCombobox.SelectedIndex = -1;
+            foreach (StackPanel sp in CategoryStackPanel.Children)
+            {
+                foreach (CheckBox checkbox in sp.Children)
+                {
+                    checkbox.IsChecked = false;
+                }
+            }
 
             foreach (CheckBox checkBox in ActeurStackPanel.Children)
             {
@@ -74,21 +81,33 @@ namespace MonCine.Vues
 
         private void InitialiseListView()
         {
-            Films = _DalFilm.ReadItems();
+            Films = _dalFilm.ReadItems();
             LstFilms.ItemsSource = Films;
         }
+
 
         private void PopulateCheckBoxesInStackPannel()
         {
             // Categorie
             List<String> categories = typeof(Categorie).GetEnumNames().ToList();
-            foreach (string cat in categories)
+            for (int i = 0; i < categories.Count; i += 3)
             {
-                CategoryCombobox.Items.Add(cat);
+                StackPanel sp = new StackPanel();
+                sp.Orientation = Orientation.Horizontal;
+                sp.Margin = new Thickness(5);
+                for (int j = i; j < i + 3; j++)
+                {
+                    CheckBox cb = new CheckBox();
+                    cb.Margin = new Thickness(5, 0, 5, 0);
+                    cb.Content = categories[j];
+                    sp.Children.Add(cb);
+                }
+
+                CategoryStackPanel.Children.Add(sp);
             }
 
             // Acteurs
-            List<Acteur> acteurs = _DalActeur.ReadItems();
+            List<Acteur> acteurs = _dalActeur.ReadItems();
             foreach (Acteur acteur in acteurs)
             {
                 CheckBox chkb = new CheckBox();
@@ -99,7 +118,7 @@ namespace MonCine.Vues
             }
 
             // Realisateurs
-            List<Realisateur> realisateurs = _DalRealisateur.ReadItems();
+            List<Realisateur> realisateurs = _dalRealisateur.ReadItems();
             foreach (Realisateur realisateur in realisateurs)
             {
                 CheckBox chkb = new CheckBox();
@@ -116,7 +135,7 @@ namespace MonCine.Vues
         /// </summary>
         private void RefreshItems()
         {
-            LstFilms.ItemsSource = _DalFilm.ReadItems();
+            LstFilms.ItemsSource = _dalFilm.ReadItems();
         }
 
         /// <summary>
@@ -137,7 +156,16 @@ namespace MonCine.Vues
             if (film != null)
             {
                 NameField.Text = film.Name;
-                CategoryCombobox.SelectedIndex = (int)(Categorie)film?.Categories[0];
+
+                // Categories
+                foreach (StackPanel sp in CategoryStackPanel.Children)
+                {
+                    foreach (CheckBox cb in sp.Children)
+                    {
+                        bool exists = film.Categories.Exists(cat => cat.ToString() == cb.Content.ToString());
+                        cb.IsChecked = exists;
+                    }
+                }
 
                 // Acteurs
                 foreach (CheckBox checkbox in ActeurStackPanel.Children)
@@ -174,7 +202,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = GetFilmFromValues();
-                var result = _DalFilm.AddItem(film);
+                var result = _dalFilm.AddItem(film);
                 if (result)
                 {
                     RefreshItems();
@@ -183,6 +211,7 @@ namespace MonCine.Vues
                 }
             }
         }
+
 
         /// <summary>
         /// Permet de créer un objet film à partir des valeurs saisies dans les champs
@@ -195,7 +224,21 @@ namespace MonCine.Vues
             bool surAffiche = CkbAffiche.IsChecked.Value;
 
 
-            Categorie categorie = (Categorie)CategoryCombobox.SelectedIndex;
+            List<Categorie> categories = new List<Categorie>();
+            foreach (StackPanel sp in CategoryStackPanel.Children)
+            {
+                foreach (CheckBox checkBox in sp.Children)
+                {
+                    if (checkBox.IsChecked.Value)
+                    {
+                        Categorie cat;
+                        if (Enum.TryParse<Categorie>(checkBox.Content.ToString(), true, out cat))
+                        {
+                            categories.Add(cat);
+                        }
+                    }
+                }
+            }
 
 
             List<Acteur> acteurs = new List<Acteur>();
@@ -221,13 +264,14 @@ namespace MonCine.Vues
             ClearFields();
 
             Film film = new Film(nom,
-                new List<Categorie>() { categorie },
+                categories,
                 acteurs,
                 realisateurs,
                 surAffiche);
 
             return film;
         }
+
 
 
         // Update
@@ -244,7 +288,7 @@ namespace MonCine.Vues
                 Film updatedFilm = GetFilmFromValues();
                 updatedFilm.Id = selectedFilm.Id;
 
-                var result = _DalFilm.UpdateItem(updatedFilm);
+                var result = _dalFilm.UpdateItem(updatedFilm);
 
                 if (result)
                 {
@@ -255,6 +299,7 @@ namespace MonCine.Vues
                 }
             }
         }
+
 
 
         // Delete
@@ -268,7 +313,7 @@ namespace MonCine.Vues
             else
             {
                 Film film = (Film)LstFilms.SelectedItem;
-                var result = _DalFilm.DeleteItem(film);
+                var result = _dalFilm.DeleteItem(film);
 
                 if (result)
                 {
@@ -279,6 +324,9 @@ namespace MonCine.Vues
                 }
             }
         }
+
+
+
 
         /// <summary>
         /// Accède à la fenêtre des projections
@@ -297,9 +345,8 @@ namespace MonCine.Vues
                 FProjectionFilm projectionFilm = new FProjectionFilm(_dalProjection, film);
                 projectionFilm.Show();
             }
-
-           
-            
         }
+
+
     }
 }
