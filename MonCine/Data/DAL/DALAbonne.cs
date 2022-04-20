@@ -12,7 +12,7 @@ namespace MonCine.Data
         public string CollectionName { get; set; }
 
 
-        public DALAbonne()
+        public DALAbonne(IMongoClient client = null):base(client)
         {
             CollectionName = "Abonne";
             AddDefaultAbo();

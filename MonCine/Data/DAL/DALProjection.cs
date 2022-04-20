@@ -11,7 +11,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALProjection()
+        public DALProjection(IMongoClient client = null):base(client)
         {
             CollectionName = "Projection";
         }
@@ -83,7 +83,7 @@ namespace MonCine.Data
             throw new NotImplementedException();
         }
 
-        bool ICRUD<Projection>.DeleteItem(Projection pObj)
+        public bool DeleteItem(Projection pObj)
         {
             throw new NotImplementedException();
         }
