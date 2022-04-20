@@ -26,12 +26,14 @@ namespace MonCineTests
             abonneCollection = new Mock<IMongoCollection<Abonne>>();
             abonneCursor = new Mock<IAsyncCursor<Abonne>>();
 
+            DateTime uneDate = new DateTime();
+            uneDate = DateTime.Today;
 
             abonneList = new List<Abonne>
             {
-               new Abonne("Abonne 1"),
-               new Abonne("Abonne 2"),
-               new Abonne("Abonne 3")
+                new Abonne("Abonne 1","Leonardo Di caprio","Denis Villeneuve", 12, uneDate,"Gwenael","Galliot"),
+                new Abonne("Abonne 2","Johnny depp","Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
+                new Abonne("Abonne 3","robert downey jr","Denis Villeneuve", 22, uneDate,"Amhed","Toumi")
             };
         }
 
@@ -68,7 +70,6 @@ namespace MonCineTests
 
             // Assert
             Assert.Equal(abonneList, documents);
-
         }
 
     }
