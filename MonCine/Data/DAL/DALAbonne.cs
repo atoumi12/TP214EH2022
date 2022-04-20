@@ -17,6 +17,7 @@ namespace MonCine.Data
             CollectionName = "Abonne";
             AddDefaultAbo();
         }
+
         public bool AddItem(Abonne pObj)
         {
             throw new NotImplementedException();
@@ -34,7 +35,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Abonne>(CollectionName);
-                abonnes = collection.Aggregate().ToList();
+                abonnes = collection.FindSync(Builders<Abonne>.Filter.Empty).ToList();
             }
             catch (Exception ex)
             {
@@ -43,6 +44,8 @@ namespace MonCine.Data
             }
 
             return abonnes;
+
+
         }
 
         public bool UpdateItem(Abonne pObj)
@@ -52,11 +55,13 @@ namespace MonCine.Data
 
         private async void AddDefaultAbo()
         {
+            DateTime uneDate = new DateTime();
+            uneDate = DateTime.Today;
             List<Abonne> abonnes = new List<Abonne>
             {
-                new Abonne("Abonne 1"),
-                new Abonne("Abonne 2"),
-                new Abonne("Abonne 3")
+                new Abonne("Abonne 1","Leonardo Di caprio","Denis Villeneuve", 12, uneDate,"Gwenael","Galliot"),
+                new Abonne("Abonne 2","Johnny depp","Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
+                new Abonne("Abonne 3","robert downey jr","Denis Villeneuve", 22, uneDate,"Amhed","Toumi")
             };
 
             try

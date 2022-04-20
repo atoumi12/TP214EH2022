@@ -29,8 +29,6 @@ namespace MonCine.Vues
             Dal = dal;
             abonne = unAbonne;
             InitialConfiguration();
-
-
         }
 
 
@@ -40,14 +38,22 @@ namespace MonCine.Vues
         /// </summary>
         private void InitialConfiguration()
         {
-            //
-            string txt = abonne.FirstName + " " + abonne.LastName + " ";
-            UserInfos.Text = txt;
+            UserInfos.Text = $"{abonne.FirstName} {abonne.LastName} :" +
+                $"\n" +
+                $"\n" +
+                $"Acteur favorie : {abonne.ActeurFavorie}" +
+                $"\n" +
+                $"\n" +
+                $"Realisateur favorie : {abonne.RealisateurFavorie}" +
+                $"\n" +
+                $"\n" +
+                $"Seance assister : {abonne.nbSeanceAssistees}";
         }
+
 
         private void BtnReturn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new Accueil());
+            this.NavigationService.Navigate(new FAbonnes(new DALAbonne()));
         }
 
 

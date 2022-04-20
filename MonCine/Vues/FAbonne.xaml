@@ -31,12 +31,12 @@
 
   
 
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Informatioon : "></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Information : " FontSize="15"></TextBlock>
 
 
         <TextBlock Name="UserInfos" 
                  Grid.Row="2" Grid.Column="2" Width="auto" Grid.ColumnSpan="3" Text="tst&#xD;&#xA;" Background="LightSteelBlue"
-                   Margin="10" >
+                   Margin="10" Padding="20" >
         </TextBlock>
 
 

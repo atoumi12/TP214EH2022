@@ -9,25 +9,37 @@ namespace MonCine.Data
     {
         //private ObjectId Id { get; set; }
         public string Username { get; set; }
-        private DateTime DateAdhesion { get; set; }
+        public DateTime DateAdhesion { get; set; }
 
-        private String ActeurFavorie { get; set; }
+        public String ActeurFavorie { get; set; }
 
-        private String RealisateurFavorie { get; set; }
+        public String RealisateurFavorie { get; set; }
 
-        private String Categorie { get; set; }
+        public String Categorie { get; set; }
 
-        private bool Recomprenses { get; set; }
+        public bool Recomprenses { get; set; }
 
-        private bool Reservation { get; set; }
+        public bool Reservation { get; set; }
 
-        private int nbSeanceAssistees { get; set; }
+        public int nbSeanceAssistees { get; set; }
 
 
 
         public Abonne(string pUsername)
         {
             Username = pUsername;
+        }
+
+        public Abonne(string pUsername, string pActeurFavorie, string pRealisateurFavorie,
+            int pnbSeanceAssistees, DateTime pDateAdhesion,string pFirstName, string pLastname)
+        {
+            Username = pUsername;
+            ActeurFavorie = pActeurFavorie;
+            RealisateurFavorie = pRealisateurFavorie;
+            nbSeanceAssistees = pnbSeanceAssistees;
+            DateAdhesion = pDateAdhesion;
+            FirstName = pFirstName;
+            LastName = pLastname;
         }
 
 
@@ -51,7 +63,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"{Username}";
+            return $"{FirstName} {LastName}";
         }
     }
 
