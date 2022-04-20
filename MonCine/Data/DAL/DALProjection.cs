@@ -14,7 +14,6 @@ namespace MonCine.Data
         public DALProjection()
         {
             CollectionName = "Projection";
-            
         }
 
 

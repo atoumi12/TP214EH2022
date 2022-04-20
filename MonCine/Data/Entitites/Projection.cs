@@ -18,7 +18,7 @@ namespace MonCine.Data
         {
             Salle = salle;
             Film = film;
-            DateDebut = DateTime.Now;
+            DateDebut = DateTime.Now.ToLocalTime();
         }
 
 
@@ -40,7 +40,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"Salle : {Salle} - {DateDebut.ToShortTimeString()}";
+            return $"Salle : {Salle} - {DateDebut.ToUniversalTime()}";
         }
     }
 }
