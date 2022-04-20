@@ -12,7 +12,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALActeur()
+        public DALActeur(IMongoClient client = null):base(client)
         {
             CollectionName = "Acteur";
             AddDefaultActeur();

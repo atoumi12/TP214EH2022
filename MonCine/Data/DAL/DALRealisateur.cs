@@ -11,7 +11,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALRealisateur()
+        public DALRealisateur(IMongoClient client = null):base(client)
         {
             CollectionName = "Realisateur";
             AddDefaultRealisateurs();

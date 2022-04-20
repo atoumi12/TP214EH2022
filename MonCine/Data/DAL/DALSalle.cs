@@ -11,7 +11,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALSalle()
+        public DALSalle(IMongoClient client =null):base(client)
         {
             CollectionName = "Salle";
             AddDefaultsalle();
