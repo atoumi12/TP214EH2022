@@ -42,7 +42,7 @@ namespace MonCine.Vues
 
             if (projections.Count == 0)
             {
-                txtLstProjectionsCount.Text = "Aucune projections programmées pour l'instant ! \nVeuillez en ajoutez.";
+                txtLstProjectionsCount.Text = "Aucune projection programmée pour l'instant ! \nVeuillez en ajoutez.";
                 ProjectionsListView.Visibility = Visibility.Hidden;
             }
             else
