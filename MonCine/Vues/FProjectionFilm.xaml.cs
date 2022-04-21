@@ -40,7 +40,17 @@ namespace MonCine.Vues
 
             projections = dalProjection.GetProjectionsOfFilm(FilmChoisi);
 
-            ProjectionsListView.ItemsSource = projections;
+            if (projections.Count == 0)
+            {
+                txtLstProjectionsCount.Text = "Aucune projections programmées pour l'instant ! \nVeuillez en ajoutez.";
+                ProjectionsListView.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                txtLstProjectionsCount.Text = "";
+                ProjectionsListView.Visibility = Visibility.Visible;
+                ProjectionsListView.ItemsSource = projections;
+            }
 
 
         }

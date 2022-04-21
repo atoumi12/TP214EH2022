@@ -29,10 +29,10 @@ namespace MonCineTests
 
             projectionsList = new List<Projection>
             {
-                new Projection(new Salle(1), new Film("Film1 Dal Projection")),
-                new Projection(new Salle(2), new Film("Film1 Dal Projection")),
-                new Projection(new Salle(3), new Film("Film2 Dal Projection")),
-                new Projection(new Salle(4), new Film("Film2 Dal Projection"))
+                new Projection(new Salle(1), new Film("Film1 Dal Projection"), DateTime.Now),
+                new Projection(new Salle(2), new Film("Film1 Dal Projection"), DateTime.Now),
+                new Projection(new Salle(3), new Film("Film2 Dal Projection"), DateTime.Now),
+                new Projection(new Salle(4), new Film("Film2 Dal Projection"), DateTime.Now)
             };
         }
 
@@ -64,7 +64,7 @@ namespace MonCineTests
 
             var dal = new DALProjection(mongoClient.Object);
 
-            Projection projection = new Projection(new Salle(100), new Film("Film DAL Projection Test"));
+            Projection projection = new Projection(new Salle(100), new Film("Film DAL Projection Test"), DateTime.Now);
 
             // Act
             bool result = dal.AddItem(projection);

@@ -8,11 +8,12 @@ namespace MonCine.Data
     {
         public Projection programmerProjection()
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public void offrirRecompense()
         {
+            throw new NotImplementedException();
         }
     }
 }

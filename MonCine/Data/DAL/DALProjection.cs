@@ -11,12 +11,10 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALProjection(IMongoClient client = null):base(client)
+        public DALProjection(IMongoClient client = null) : base(client)
         {
             CollectionName = "Projection";
         }
-
-
 
 
         /// <summary>
@@ -27,7 +25,6 @@ namespace MonCine.Data
         {
             return null;
         }
-
 
 
         public bool AddItem(Projection pProjection)
@@ -64,7 +61,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Projection>(CollectionName);
-                projections = collection.Find(Builders<Projection>.Filter.Eq(x=>x.Film.Id , pFilm.Id)).ToList();
+                projections = collection.Find(Builders<Projection>.Filter.Eq(x => x.Film.Id, pFilm.Id)).ToList();
             }
             catch (Exception ex)
             {

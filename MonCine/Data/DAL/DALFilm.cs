@@ -11,7 +11,7 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALFilm(IMongoClient client = null):base(client)
+        public DALFilm(IMongoClient client = null) : base(client)
         {
             CollectionName = "Film";
             AddDefaultFilms();
@@ -51,7 +51,6 @@ namespace MonCine.Data
         /// </summary>
         /// <returns>Liste de films</returns>
         public List<Film> ReadItems()
-   
         {
             List<Film> films = new List<Film>();
 
@@ -93,7 +92,7 @@ namespace MonCine.Data
             return true;
         }
 
-        public  bool UpdateItem(Film pFilm)
+        public bool UpdateItem(Film pFilm)
         {
             if (pFilm is null)
             {

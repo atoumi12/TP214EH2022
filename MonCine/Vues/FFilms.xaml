@@ -82,35 +82,36 @@
         </GroupBox>
 
         <!--Afficher les Projection-->
-        <Button x:Name="BtnAfficherProjections" Grid.Column="2" Grid.Row="1" Content="Afficher projection" FontSize="15"
+        <Button x:Name="BtnAfficherProjections" Grid.Column="2" Grid.Row="1" Content="Afficher les projections" 
+                FontSize="15" Width="180"
                 Click="BtnAfficherProjections_Click" Margin="0,10" HorizontalAlignment="Right"></Button>
 
 
 
+        <!-- Actions -->
         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
 
-            <Button x:Name="BtnAdd" VerticalAlignment="Center" Width="150" Margin="0,0,10,0"
-                    Content="Créer" Click="BtnAdd_Click" FontSize="18"/>
-
-            <Button x:Name="BtnDelete" VerticalAlignment="Center" Width="150" FontSize="18"
+            <Button x:Name="BtnDelete" VerticalAlignment="Center" Width="100" FontSize="15"
                     Content="Supprimer" Click="BtnDelete_Click">
             </Button>
 
-            <Button x:Name="BtnUpdate" VerticalAlignment="center" Width="150" FontSize="18"
+            <Button x:Name="BtnUpdate" VerticalAlignment="center" Width="100" FontSize="15"
                     Margin="10,0,0,0"
                     Content="Modifier" Click="BtnUpdate_Click">
-
             </Button>
+
+            <Button x:Name="BtnViderChamps" VerticalAlignment="center" Width="150" FontSize="15"
+                    Margin="30,0,0,0"
+                    Content="Vider Champs" Click="BtnViderChamps_Click"/>
+
+            <Button x:Name="BtnAdd" VerticalAlignment="Center" Width="100" 
+                    Margin="10,0,10,0"
+                    Content="Créer" Click="BtnAdd_Click" FontSize="15"/>
 
         </StackPanel>
 
 
 
-
-        
-
-
-        <!-- Actions -->
         
 
 

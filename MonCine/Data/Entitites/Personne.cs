@@ -10,8 +10,7 @@ namespace MonCine.Data
 {
     public class Personne
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonId] public ObjectId Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
@@ -19,7 +18,6 @@ namespace MonCine.Data
 
         public Personne()
         {
-            
         }
 
         public Personne(string pFirstName, string pLastName)

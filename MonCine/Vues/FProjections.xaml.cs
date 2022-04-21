@@ -78,6 +78,7 @@ namespace MonCine.Vues
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 && DatePickerProjection.SelectedDate != null;
+
             if (!champsRemplis)
             {
                 MessageBox.Show("Veuillez remplir les champs nécéssaires pour créer la projection", "Ajout de Projection", MessageBoxButton.OK, MessageBoxImage.Warning);

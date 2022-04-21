@@ -8,7 +8,7 @@ namespace MonCine.Data
 {
     public class Salle
     {
-        [BsonId]  private ObjectId Id { get; set;}
+        [BsonId] private ObjectId Id { get; set; }
         public int NumSale { get; set; }
         private Place Place { get; set; }
 
@@ -23,6 +23,4 @@ namespace MonCine.Data
             return $"Salle (N°{NumSale})";
         }
     }
-
-
 }

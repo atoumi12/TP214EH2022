@@ -18,7 +18,6 @@ namespace MonCine.Data
         {
             mongoDBClient = client ?? OuvrirConnexion();
             database = ConnectDatabase();
-
         }
 
         private IMongoClient OuvrirConnexion()
@@ -50,26 +49,5 @@ namespace MonCine.Data
 
             return db;
         }
-
-
-
-        public List<Abonne> ReadAbonnes()
-        {
-            var abonnes = new List<Abonne>();
-
-            try
-            {
-                var collection = database.GetCollection<Abonne>("Abonnes");
-                abonnes = collection.Aggregate().ToList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Impossible d'obtenir la collection " + ex.Message, "Erreur", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-
-            return abonnes;
-        }
-
     }
 }

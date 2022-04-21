@@ -35,18 +35,21 @@ namespace MonCine.Vues
             UserInfos.Text = $"Nom et Prénom : {pAbonne.FirstName} {pAbonne.LastName}" +
                 $"\n" +
                 $"\n" +
-                $"Acteur favorie : {pAbonne.ActeurFavorie}" +
+                $"Acteur favori : {pAbonne.ActeurFavorie}" +
                 $"\n" +
                 $"\n" +
-                $"Realisateur favorie : {pAbonne.RealisateurFavorie}" +
+                $"Réalisateur favori : {pAbonne.RealisateurFavorie}" +
                 $"\n" +
                 $"\n" +
-                $"Seance assister : {pAbonne.nbSeanceAssistees}";
+                $"Séance assistée(s): {pAbonne.nbSeanceAssistees}";
 
             DisableButtons();
 
         }
 
+        /// <summary>
+        /// Désactive les boutons non-implémentés pour l'instant
+        /// </summary>
         private void DisableButtons()
         {
             BtnDelete.IsEnabled = false;

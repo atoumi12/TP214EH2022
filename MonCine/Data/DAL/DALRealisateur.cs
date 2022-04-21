@@ -7,11 +7,11 @@ using MongoDB.Driver;
 
 namespace MonCine.Data
 {
-    public class DALRealisateur: DAL, ICRUD<Realisateur>
+    public class DALRealisateur : DAL, ICRUD<Realisateur>
     {
         public string CollectionName { get; set; }
 
-        public DALRealisateur(IMongoClient client = null):base(client)
+        public DALRealisateur(IMongoClient client = null) : base(client)
         {
             CollectionName = "Realisateur";
             AddDefaultRealisateurs();
@@ -44,7 +44,6 @@ namespace MonCine.Data
                     MessageBoxImage.Error);
                 throw;
             }
-
         }
 
         public List<Realisateur> ReadItems()
@@ -55,11 +54,11 @@ namespace MonCine.Data
             {
                 var colllection = database.GetCollection<Realisateur>(CollectionName);
                 realisateurs = colllection.Find(Builders<Realisateur>.Filter.Empty).ToList();
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Impossible d'obtenir les données dans la collection Realisateur {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Impossible d'obtenir les données dans la collection Realisateur {ex.Message}",
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
 

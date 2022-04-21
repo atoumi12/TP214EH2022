@@ -8,9 +8,8 @@ namespace MonCine.Data
     {
         public List<Film> films { get; set; }
 
-        public Realisateur(string pFirstName, string pLastName):base(pFirstName, pLastName)
+        public Realisateur(string pFirstName, string pLastName) : base(pFirstName, pLastName)
         {
-            
         }
     }
 }

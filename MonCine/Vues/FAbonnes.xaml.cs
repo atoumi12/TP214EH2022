@@ -25,8 +25,8 @@ namespace MonCine.Vues
         public FAbonnes(DALAbonne dal)
         {
             InitializeComponent();
-            abonnes = dal.ReadItems();
             Dal = dal;
+            abonnes = Dal.ReadItems();
             LstAbonnes.ItemsSource = abonnes;
 
         }

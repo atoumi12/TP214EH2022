@@ -12,10 +12,10 @@ namespace MonCine.Data
         public string CollectionName { get; set; }
 
 
-        public DALAbonne(IMongoClient client = null):base(client)
+        public DALAbonne(IMongoClient client = null) : base(client)
         {
             CollectionName = "Abonne";
-            AddDefaultAbo();
+            AddDefaultAbonnes();
         }
 
         public bool AddItem(Abonne pObj)
@@ -44,8 +44,6 @@ namespace MonCine.Data
             }
 
             return abonnes;
-
-
         }
 
         public bool UpdateItem(Abonne pObj)
@@ -53,15 +51,15 @@ namespace MonCine.Data
             throw new NotImplementedException();
         }
 
-        private async void AddDefaultAbo()
+        private async void AddDefaultAbonnes()
         {
             DateTime uneDate = new DateTime();
             uneDate = DateTime.Today;
             List<Abonne> abonnes = new List<Abonne>
             {
-                new Abonne("Abonne 1","Leonardo Di caprio","Denis Villeneuve", 12, uneDate,"Gwenael","Galliot"),
-                new Abonne("Abonne 2","Johnny depp","Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
-                new Abonne("Abonne 3","robert downey jr","Denis Villeneuve", 22, uneDate,"Amhed","Toumi")
+                new Abonne("Abonne 1", "Leonardo Di caprio", "Denis Villeneuve", 12, uneDate, "Gwenael", "Galliot"),
+                new Abonne("Abonne 2", "Johnny depp", "Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
+                new Abonne("Abonne 3", "robert downey jr", "Denis Villeneuve", 22, uneDate, "Amhed", "Toumi")
             };
 
             try
@@ -74,7 +72,7 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Impossible d'ajouter des abonnes dans la collection " + ex.Message, "Erreur",
+                MessageBox.Show("Impossible d'ajouter des abonnés dans la collection " + ex.Message, "Erreur",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 throw;
@@ -82,4 +80,3 @@ namespace MonCine.Data
         }
     }
 }
-

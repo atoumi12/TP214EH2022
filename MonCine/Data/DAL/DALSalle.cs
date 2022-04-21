@@ -11,13 +11,13 @@ namespace MonCine.Data
     {
         public string CollectionName { get; set; }
 
-        public DALSalle(IMongoClient client =null):base(client)
+        public DALSalle(IMongoClient client = null) : base(client)
         {
             CollectionName = "Salle";
             AddDefaultsalle();
-
         }
-        private  void AddDefaultsalle()
+
+        private void AddDefaultsalle()
         {
             List<Salle> salles = new List<Salle>
             {
@@ -31,7 +31,7 @@ namespace MonCine.Data
                 var collection = database.GetCollection<Salle>(CollectionName);
                 if (collection.CountDocuments(Builders<Salle>.Filter.Empty) <= 0)
                 {
-                     collection.InsertManyAsync(salles);
+                    collection.InsertManyAsync(salles);
                 }
             }
             catch (Exception ex)
@@ -43,7 +43,7 @@ namespace MonCine.Data
             }
         }
 
-        public  bool AddItem(Salle pSalle)
+        public bool AddItem(Salle pSalle)
         {
             if (pSalle is null)
             {
@@ -66,16 +66,6 @@ namespace MonCine.Data
             return true;
         }
 
-
-        public bool UpdateItem(Projection pObj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteItem(Projection pObj)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<Salle> ReadItems()
         {

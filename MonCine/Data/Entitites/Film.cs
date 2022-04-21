@@ -26,7 +26,8 @@ namespace MonCine.Data
         private int NbProjection { get; set; }
 
 
-        public Film(string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null, List<Realisateur> pRealisateurs = null, bool pSurAffiche=false)
+        public Film(string pName, List<Categorie> pCategories = null, List<Acteur> pActeurs = null,
+            List<Realisateur> pRealisateurs = null, bool pSurAffiche = false)
         {
             Name = pName;
             Notes = GenerateNotes();
@@ -58,20 +59,20 @@ namespace MonCine.Data
             List<String> enumNames = typeof(Categorie).GetEnumNames().ToList();
             List<Categorie> categories = new List<Categorie>();
 
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    int indiceCat = random.Next(enumNames.Count);
-            //    Categorie cat = (Categorie)indiceCat;
+            for (int i = 0; i < 5; i++)
+            {
+                int indiceCat = random.Next(enumNames.Count);
+                Categorie cat = (Categorie)indiceCat;
 
-            //    if (!categories.Contains(cat))
-            //    {
-            //        categories.Add(cat);
-            //    }
-            //}
+                if (!categories.Contains(cat))
+                {
+                    categories.Add(cat);
+                }
+            }
 
-            int indiceCat = random.Next(enumNames.Count);
-            Categorie cat = (Categorie)indiceCat;
-            categories.Add(cat);
+            //int indiceCat = random.Next(enumNames.Count);
+            //Categorie cat = (Categorie)indiceCat;
+            //categories.Add(cat);
 
             return categories;
         }

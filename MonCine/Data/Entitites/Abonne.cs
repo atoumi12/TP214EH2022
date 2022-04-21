@@ -24,14 +24,13 @@ namespace MonCine.Data
         public int nbSeanceAssistees { get; set; }
 
 
-
         public Abonne(string pUsername)
         {
             Username = pUsername;
         }
 
         public Abonne(string pUsername, string pActeurFavorie, string pRealisateurFavorie,
-            int pnbSeanceAssistees, DateTime pDateAdhesion,string pFirstName, string pLastname)
+            int pnbSeanceAssistees, DateTime pDateAdhesion, string pFirstName, string pLastname)
         {
             Username = pUsername;
             ActeurFavorie = pActeurFavorie;
@@ -45,20 +44,18 @@ namespace MonCine.Data
 
         public void NoterFilm()
         {
-
+            throw new NotImplementedException();
         }
 
         public bool AimeCategorie()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool EstPrioriaitaire()
         {
-            return false;
+            throw new NotImplementedException();
         }
-
-
 
 
         public override string ToString()
@@ -66,6 +63,4 @@ namespace MonCine.Data
             return $"{FirstName} {LastName}";
         }
     }
-
-
 }
