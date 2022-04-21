@@ -15,7 +15,7 @@ namespace MonCine.Data
         public string Name { get; set; }
         public List<Categorie> Categories { get; set; }
         public DateTime DateSortie { get; set; }
-        public DateTime DateProjection { get; set; }
+        public List<DateTime> DatesProjection { get; set; }
         public DateTime DerniereProjection { get; set; }
         public bool SurAffiche { get; set; }
         public List<Acteur> Acteurs { get; set; }
@@ -39,6 +39,8 @@ namespace MonCine.Data
 
             Notes = GenerateNotes();
             NoteMoyenne = CalculerMoyennesNotes();
+
+            DatesProjection = new List<DateTime>();
         }
 
 
@@ -87,24 +89,14 @@ namespace MonCine.Data
             return Notes.Sum(x => x) / taille;
         }
 
-        public void Noter(int note)
+
+        // TODO: Refaire cette méthode correctement, gestion exception
+        public void AjouterDateProjection(Projection pProjection)
         {
-            if (note < 0 || note > 10)
+            if (NbProjection <= 2)
             {
-                throw new ArgumentOutOfRangeException("note", "La notre attribué doit être comprise entre 1 et 10");
+                DatesProjection.Add(pProjection.DateDebut);
             }
-
-            Notes.Add(note);
-        }
-
-        public Film SelectionnerFilm()
-        {
-            return this;
-        }
-
-        public bool EstAdmissibleAReprojecter()
-        {
-            return NbProjection <= 1;
         }
 
         public override string ToString()

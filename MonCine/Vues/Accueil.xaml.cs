@@ -45,5 +45,10 @@ namespace MonCine.Vues
             NavigationService?.Navigate(frmFilms);
         }
 
+        private void BtnAffiche_Click(object sender, RoutedEventArgs e)
+        {
+            FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALFilm());
+            NavigationService?.Navigate(frmAffiche);
+        }
     }
 }

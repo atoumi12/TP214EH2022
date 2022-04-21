@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -75,14 +76,62 @@ namespace MonCine.Data
         }
 
 
+
+        public List<Projection> GetProjectionsByDate(DateTime pDate)
+        {
+            if (pDate == DateTime.MinValue)
+            {
+                throw new ArgumentNullException("pDate", "La date de recherche ne peut pas être null");
+            }
+
+            List<Projection> projections = new List<Projection>();
+            try
+            {
+                var collection = database.GetCollection<Projection>(CollectionName);
+
+                var filter = Builders<Projection>.Filter.Where(p => p.DateDebut == pDate);
+
+                projections = collection.Find(filter).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible d'effectuer la recherche selon la date suivante {pDate.ToShortDateString()} | Erreur: {ex.Message}",
+                    "Erreur de recherche", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                throw;
+            }
+
+            return projections;
+        }
+
+
+
+
         public bool UpdateItem(Projection pObj)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteItem(Projection pObj)
+        public bool DeleteItem(Projection pProjection)
         {
-            throw new NotImplementedException();
+            if (pProjection is null)
+            {
+                throw new ArgumentNullException("pProjection ", "La projection ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Projection>(CollectionName);
+                collection.DeleteOne(Builders<Projection>.Filter.Eq(x => x.Id, pProjection.Id));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible de mettre à jour la projection de la collection {ex.Message}",
+                    "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+
+            return true;
         }
     }
 }

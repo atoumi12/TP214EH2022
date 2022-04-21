@@ -128,5 +128,7 @@ namespace MonCineTests
         }
 
 
+        // TODO: deleteItem tests
+
     }
 }

@@ -128,7 +128,38 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Impossible de mettre à jour le film {pFilm.Name} dans la collection {ex.Message}",
+                MessageBox.Show($"Impossible de supprimer le film {pFilm.Name} dans la collection {ex.Message}",
+                    "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Permet d'attribuer la date de la projection au film concerné
+        /// </summary>
+        /// <param name="pProjection">La projection en question</param>
+        /// <returns>Vrai si c'est réussi, sinon False</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public bool AddProjectionDate(Projection pProjection)
+        {
+            if (pProjection is null)
+            {
+                throw new ArgumentNullException("pProjection", "La projection ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Film>(CollectionName);
+                pProjection.Film.AjouterDateProjection(pProjection);
+
+                UpdateItem(pProjection.Film);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible de mettre à jour le film {pProjection.Film.Name} dans la collection {ex.Message}",
                     "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
