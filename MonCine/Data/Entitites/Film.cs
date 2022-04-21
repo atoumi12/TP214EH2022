@@ -20,7 +20,9 @@ namespace MonCine.Data
         public bool SurAffiche { get; set; }
         public List<Acteur> Acteurs { get; set; }
         public List<Realisateur> Realisateurs { get; set; }
-        public List<int> Notes { get; set; }
+        private List<int> Notes { get; set; }
+        public double NoteMoyenne { get; set; }
+
 
         [Range(0, 2, ErrorMessage = "Le nombre de projection d'un film ne peut pas dépasser 2 projections pas années")]
         private int NbProjection { get; set; }
@@ -30,11 +32,13 @@ namespace MonCine.Data
             List<Realisateur> pRealisateurs = null, bool pSurAffiche = false)
         {
             Name = pName;
-            Notes = GenerateNotes();
             Categories = pCategories ?? GenerateCategories();
             Acteurs = pActeurs ?? new List<Acteur>();
             Realisateurs = pRealisateurs ?? new List<Realisateur>();
             SurAffiche = pSurAffiche;
+
+            Notes = GenerateNotes();
+            NoteMoyenne = CalculerMoyennesNotes();
         }
 
 
@@ -70,16 +74,12 @@ namespace MonCine.Data
                 }
             }
 
-            //int indiceCat = random.Next(enumNames.Count);
-            //Categorie cat = (Categorie)indiceCat;
-            //categories.Add(cat);
-
             return categories;
         }
 
         #endregion
 
-        public double CalculerMoyennesNotes()
+        private double CalculerMoyennesNotes()
         {
             Notes ??= new List<int>();
             int taille = Notes.Count > 0 ? Notes.Count : 1;
@@ -109,7 +109,7 @@ namespace MonCine.Data
 
         public override string ToString()
         {
-            return $"{Name} - ({CalculerMoyennesNotes()}/10)";
+            return $"{Name} - ({NoteMoyenne}/10)";
         }
     }
 }
