@@ -45,40 +45,40 @@ namespace MonCine.Vues
         private void InitialItemConfiguration()
         {
             InitialiseListView();
-            PopulateCheckBoxesInStackPannel();
+            //PopulateCheckBoxesInStackPannel();
 
-            ClearFields();
+            //ClearFields();
 
             BtnDelete.IsEnabled = false;
             BtnUpdate.IsEnabled = false;
             BtnAfficherProjections.IsEnabled = false;
         }
 
-        private void ClearFields()
-        {
-            // Vider les champs
-            NameField.Text = "";
-            CkbAffiche.IsChecked = false;
+        //private void ClearFields()
+        //{
+        //    // Vider les champs
+        //    NameField.Text = "";
+        //    CkbAffiche.IsChecked = false;
 
 
-            foreach (StackPanel sp in CategoryStackPanel.Children)
-            {
-                foreach (CheckBox checkbox in sp.Children)
-                {
-                    checkbox.IsChecked = false;
-                }
-            }
+        //    foreach (StackPanel sp in CategoryStackPanel.Children)
+        //    {
+        //        foreach (CheckBox checkbox in sp.Children)
+        //        {
+        //            checkbox.IsChecked = false;
+        //        }
+        //    }
 
-            foreach (CheckBox checkBox in ActeurStackPanel.Children)
-            {
-                checkBox.IsChecked = false;
-            }
+        //    foreach (CheckBox checkBox in ActeurStackPanel.Children)
+        //    {
+        //        checkBox.IsChecked = false;
+        //    }
 
-            foreach (CheckBox checkbox in RealisateurStackPanel.Children)
-            {
-                checkbox.IsChecked = false;
-            }
-        }
+        //    foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+        //    {
+        //        checkbox.IsChecked = false;
+        //    }
+        //}
 
         private void InitialiseListView()
         {
@@ -87,51 +87,51 @@ namespace MonCine.Vues
         }
 
 
-        /// <summary>
-        /// Permet de populer l'ensemble des checkbox (Catégorie, Acteur, Réalisateur)
-        /// </summary>
-        private void PopulateCheckBoxesInStackPannel()
-        {
-            // Categorie
-            List<String> categories = typeof(Categorie).GetEnumNames().ToList();
-            for (int i = 0; i < categories.Count; i += 3)
-            {
-                StackPanel sp = new StackPanel();
-                sp.Orientation = Orientation.Horizontal;
-                sp.Margin = new Thickness(0, 2, 0, 2);
-                for (int j = i; j < i + 3; j++)
-                {
-                    CheckBox cb = new CheckBox();
-                    cb.Margin = new Thickness(2, 0, 2, 0);
-                    cb.Content = categories[j];
-                    sp.Children.Add(cb);
-                }
+        ///// <summary>
+        ///// Permet de populer l'ensemble des checkbox (Catégorie, Acteur, Réalisateur)
+        ///// </summary>
+        //private void PopulateCheckBoxesInStackPannel()
+        //{
+        //    // Categorie
+        //    List<String> categories = typeof(Categorie).GetEnumNames().ToList();
+        //    for (int i = 0; i < categories.Count; i += 3)
+        //    {
+        //        StackPanel sp = new StackPanel();
+        //        sp.Orientation = Orientation.Horizontal;
+        //        sp.Margin = new Thickness(0, 2, 0, 2);
+        //        for (int j = i; j < i + 3; j++)
+        //        {
+        //            CheckBox cb = new CheckBox();
+        //            cb.Margin = new Thickness(2, 0, 2, 0);
+        //            cb.Content = categories[j];
+        //            sp.Children.Add(cb);
+        //        }
 
-                CategoryStackPanel.Children.Add(sp);
-            }
+        //        CategoryStackPanel.Children.Add(sp);
+        //    }
 
-            // Acteurs
-            List<Acteur> acteurs = _dalActeur.ReadItems();
-            foreach (Acteur acteur in acteurs)
-            {
-                CheckBox chkb = new CheckBox();
-                chkb.Content = acteur.ToString();
-                chkb.Tag = acteur;
+        //    // Acteurs
+        //    List<Acteur> acteurs = _dalActeur.ReadItems();
+        //    foreach (Acteur acteur in acteurs)
+        //    {
+        //        CheckBox chkb = new CheckBox();
+        //        chkb.Content = acteur.ToString();
+        //        chkb.Tag = acteur;
 
-                ActeurStackPanel.Children.Add(chkb);
-            }
+        //        ActeurStackPanel.Children.Add(chkb);
+        //    }
 
-            // Realisateurs
-            List<Realisateur> realisateurs = _dalRealisateur.ReadItems();
-            foreach (Realisateur realisateur in realisateurs)
-            {
-                CheckBox chkb = new CheckBox();
-                chkb.Content = realisateur.ToString();
-                chkb.Tag = realisateur;
+        //    // Realisateurs
+        //    List<Realisateur> realisateurs = _dalRealisateur.ReadItems();
+        //    foreach (Realisateur realisateur in realisateurs)
+        //    {
+        //        CheckBox chkb = new CheckBox();
+        //        chkb.Content = realisateur.ToString();
+        //        chkb.Tag = realisateur;
 
-                RealisateurStackPanel.Children.Add(chkb);
-            }
-        }
+        //        RealisateurStackPanel.Children.Add(chkb);
+        //    }
+        //}
 
 
         /// <summary>
@@ -162,30 +162,30 @@ namespace MonCine.Vues
                 NameField.Text = film.Name;
 
                 // Categories
-                foreach (StackPanel sp in CategoryStackPanel.Children)
-                {
-                    foreach (CheckBox cb in sp.Children)
-                    {
-                        bool exists = film.Categories.Exists(cat => cat.ToString() == cb.Content.ToString());
-                        cb.IsChecked = exists;
-                    }
-                }
+                //foreach (StackPanel sp in CategoryStackPanel.Children)
+                //{
+                //    foreach (CheckBox cb in sp.Children)
+                //    {
+                //        bool exists = film.Categories.Exists(cat => cat.ToString() == cb.Content.ToString());
+                //        cb.IsChecked = exists;
+                //    }
+                //}
 
-                // Acteurs
-                foreach (CheckBox checkbox in ActeurStackPanel.Children)
-                {
-                    Acteur acteurTag = checkbox.Tag as Acteur;
-                    bool exists = film.Acteurs.Exists(acteur => acteur.Id == acteurTag.Id);
-                    checkbox.IsChecked = exists;
-                }
+                //// Acteurs
+                //foreach (CheckBox checkbox in ActeurStackPanel.Children)
+                //{
+                //    Acteur acteurTag = checkbox.Tag as Acteur;
+                //    bool exists = film.Acteurs.Exists(acteur => acteur.Id == acteurTag.Id);
+                //    checkbox.IsChecked = exists;
+                //}
 
-                // Realisateurs
-                foreach (CheckBox checkbox in RealisateurStackPanel.Children)
-                {
-                    Realisateur realisateurTag = checkbox.Tag as Realisateur;
-                    bool exists = film.Realisateurs.Exists(realisateur => realisateur.Id == realisateurTag.Id);
-                    checkbox.IsChecked = exists;
-                }
+                //// Realisateurs
+                //foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+                //{
+                //    Realisateur realisateurTag = checkbox.Tag as Realisateur;
+                //    bool exists = film.Realisateurs.Exists(realisateur => realisateur.Id == realisateurTag.Id);
+                //    checkbox.IsChecked = exists;
+                //}
 
                 CkbAffiche.IsChecked = film.SurAffiche;
             }
@@ -244,7 +244,7 @@ namespace MonCine.Vues
             }
 
 
-            ClearFields();
+            //ClearFields();
 
             Film film = new Film(nom,
                 categories,
@@ -450,13 +450,13 @@ namespace MonCine.Vues
 
 
 
-        private void BtnViderChamps_Click(object sender, RoutedEventArgs e)
-        {
-            ClearFields();
+        //private void BtnViderChamps_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ClearFields();
 
-            LstFilms.SelectedIndex = -1;
-            BtnDelete.IsEnabled = false;
-            BtnUpdate.IsEnabled = false;
-        }
+        //    LstFilms.SelectedIndex = -1;
+        //    BtnDelete.IsEnabled = false;
+        //    BtnUpdate.IsEnabled = false;
+        //}
     }
 }
