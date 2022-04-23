@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -20,10 +21,20 @@ namespace MonCine.Vues
     public partial class FFilms : Page
     {
         private List<Film> Films { get; set; }
+        private List<Acteur> Acteurs { get; set; }
+        private List<Realisateur> Realisateurs { get; set; }
+        private List<String> Categories { get; set; }
+
+        private ObservableCollection<Acteur> ActeursDansLeFilm { get; set; }
+        private ObservableCollection<Realisateur> RealisateursDansLeFilm { get; set; }
+        private ObservableCollection<String> CategoriesDansLeFilm { get; set; }
+
+
         private DALFilm _dalFilm { get; set; }
         private DALActeur _dalActeur { get; set; }
         private DALRealisateur _dalRealisateur { get; set; }
         private DALProjection _dalProjection { get; set; }
+       
 
 
         public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur,
@@ -45,47 +56,33 @@ namespace MonCine.Vues
         private void InitialItemConfiguration()
         {
             InitialiseListView();
-            //PopulateCheckBoxesInStackPannel();
-
-            //ClearFields();
 
             BtnDelete.IsEnabled = false;
             BtnUpdate.IsEnabled = false;
             BtnAfficherProjections.IsEnabled = false;
         }
 
-        //private void ClearFields()
-        //{
-        //    // Vider les champs
-        //    NameField.Text = "";
-        //    CkbAffiche.IsChecked = false;
 
-
-        //    foreach (StackPanel sp in CategoryStackPanel.Children)
-        //    {
-        //        foreach (CheckBox checkbox in sp.Children)
-        //        {
-        //            checkbox.IsChecked = false;
-        //        }
-        //    }
-
-        //    foreach (CheckBox checkBox in ActeurStackPanel.Children)
-        //    {
-        //        checkBox.IsChecked = false;
-        //    }
-
-        //    foreach (CheckBox checkbox in RealisateurStackPanel.Children)
-        //    {
-        //        checkbox.IsChecked = false;
-        //    }
-        //}
 
         private void InitialiseListView()
         {
             Films = _dalFilm.ReadItems();
+            Acteurs = _dalActeur.ReadItems();
+            Realisateurs = _dalRealisateur.ReadItems();
+            Categories = typeof(Categorie).GetEnumNames().ToList();
+
             LstFilms.ItemsSource = Films;
+            LstActeurs.ItemsSource = Acteurs;
+            LstRealisateurs.ItemsSource = Realisateurs;
+            LstCategories.ItemsSource = Categories;
+
+            ActeursDansLeFilm = new ObservableCollection<Acteur>();
+            RealisateursDansLeFilm = new ObservableCollection<Realisateur>();
+            CategoriesDansLeFilm = new ObservableCollection<String>();
         }
 
+
+ 
 
         ///// <summary>
         ///// Permet de populer l'ensemble des checkbox (Catégorie, Acteur, Réalisateur)
@@ -140,6 +137,11 @@ namespace MonCine.Vues
         private void RefreshItems()
         {
             LstFilms.ItemsSource = _dalFilm.ReadItems();
+
+
+            LstActeursInTheMovie.ItemsSource = ActeursDansLeFilm;
+            LstRealisateursInTheMovie.ItemsSource = RealisateursDansLeFilm;
+            LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
         }
 
         /// <summary>
@@ -153,49 +155,6 @@ namespace MonCine.Vues
         }
 
 
-        private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Film film = (Film)LstFilms.SelectedItem;
-
-            if (film != null)
-            {
-                NameField.Text = film.Name;
-
-                // Categories
-                //foreach (StackPanel sp in CategoryStackPanel.Children)
-                //{
-                //    foreach (CheckBox cb in sp.Children)
-                //    {
-                //        bool exists = film.Categories.Exists(cat => cat.ToString() == cb.Content.ToString());
-                //        cb.IsChecked = exists;
-                //    }
-                //}
-
-                //// Acteurs
-                //foreach (CheckBox checkbox in ActeurStackPanel.Children)
-                //{
-                //    Acteur acteurTag = checkbox.Tag as Acteur;
-                //    bool exists = film.Acteurs.Exists(acteur => acteur.Id == acteurTag.Id);
-                //    checkbox.IsChecked = exists;
-                //}
-
-                //// Realisateurs
-                //foreach (CheckBox checkbox in RealisateurStackPanel.Children)
-                //{
-                //    Realisateur realisateurTag = checkbox.Tag as Realisateur;
-                //    bool exists = film.Realisateurs.Exists(realisateur => realisateur.Id == realisateurTag.Id);
-                //    checkbox.IsChecked = exists;
-                //}
-
-                CkbAffiche.IsChecked = film.SurAffiche;
-            }
-
-
-            BtnDelete.IsEnabled = film != null;
-            BtnUpdate.IsEnabled = film != null;
-            BtnAfficherProjections.IsEnabled = film != null;
-        }
-
         /// <summary>
         /// Permet de créer un objet film à partir des valeurs saisies dans les champs
         /// </summary>
@@ -208,52 +167,142 @@ namespace MonCine.Vues
 
 
             List<Categorie> categories = new List<Categorie>();
-            foreach (StackPanel sp in CategoryStackPanel.Children)
+            foreach(String cat in CategoriesDansLeFilm)
             {
-                foreach (CheckBox checkBox in sp.Children)
+                Categorie uneCat;
+                if (Enum.TryParse<Categorie>(cat, true, out uneCat))
                 {
-                    if (checkBox.IsChecked.Value)
-                    {
-                        Categorie cat;
-                        if (Enum.TryParse<Categorie>(checkBox.Content.ToString(), true, out cat))
-                        {
-                            categories.Add(cat);
-                        }
-                    }
+                    categories.Add(uneCat);
                 }
             }
+            //foreach (StackPanel sp in CategoryStackPanel.Children)
+            //{
+            //    foreach (CheckBox checkBox in sp.Children)
+            //    {
+            //        if (checkBox.IsChecked.Value)
+            //        {
+            //            Categorie cat;
+            //            if (Enum.TryParse<Categorie>(checkBox.Content.ToString(), true, out cat))
+            //            {
+            //                categories.Add(cat);
+            //            }
+            //        }
+            //    }
+            //}
 
 
-            List<Acteur> acteurs = new List<Acteur>();
-            foreach (CheckBox checkBox in ActeurStackPanel.Children)
-            {
-                if (checkBox.IsChecked.Value)
-                {
-                    acteurs.Add(checkBox.Tag as Acteur);
-                }
-            }
+            //List<Acteur> acteurs = new List<Acteur>();
+            //foreach (CheckBox checkBox in ActeurStackPanel.Children)
+            //{
+            //    if (checkBox.IsChecked.Value)
+            //    {
+            //        acteurs.Add(checkBox.Tag as Acteur);
+            //    }
+            //}
 
 
-            List<Realisateur> realisateurs = new List<Realisateur>();
-            foreach (CheckBox checkbox in RealisateurStackPanel.Children)
-            {
-                if (checkbox.IsChecked.Value)
-                {
-                    realisateurs.Add(checkbox.Tag as Realisateur);
-                }
-            }
+            //List<Realisateur> realisateurs = new List<Realisateur>();
+            //foreach (CheckBox checkbox in RealisateurStackPanel.Children)
+            //{
+            //    if (checkbox.IsChecked.Value)
+            //    {
+            //        realisateurs.Add(checkbox.Tag as Realisateur);
+            //    }
+            //}
 
 
             //ClearFields();
 
             Film film = new Film(nom,
                 categories,
-                acteurs,
-                realisateurs,
+                ActeursDansLeFilm.ToList(),
+                Realisateurs.ToList(),
                 surAffiche);
 
             return film;
         }
+
+
+
+
+
+        /// <summary>
+        /// Permet de valider les données insérées dans les champs d'un film
+        /// </summary>
+        /// <returns></returns>
+        //private (bool, string) FilmIsValid()
+        //{
+        //    bool valide = true;
+        //    string erreurs = "";
+
+        //    // Nom
+        //    if (NameField.Text.Length == 0)
+        //    {
+        //        erreurs += " - Veuillez remplir le nom du film \n";
+        //    }
+
+        //    // Categories
+        //    int nbCategories = 0;
+        //    foreach (StackPanel sp in CategoryStackPanel.Children)
+        //    {
+        //        foreach (CheckBox checkBox in sp.Children)
+        //        {
+        //            if (checkBox.IsChecked.Value)
+        //            {
+        //                nbCategories++;
+        //            }
+        //        }
+        //    }
+
+        //    if (nbCategories <= 0)
+        //    {
+        //        erreurs += " - Veuillez choisir au moins une catégorie du film \n";
+        //    }
+
+        //    // Acteurs
+        //    int nbActeurs = 0;
+        //    foreach (CheckBox checkBox in ActeurStackPanel.Children)
+        //    {
+        //        if (checkBox.IsChecked.Value)
+        //        {
+        //            nbActeurs++;
+        //        }
+        //    }
+
+        //    if (nbActeurs <= 0)
+        //    {
+        //        erreurs += " - Veuillez choisir au moins un acteur pour le film \n";
+        //    }
+
+
+        //    // Realisateurs
+        //    int nbRealisateurs = 0;
+        //    foreach (CheckBox checkBox in ActeurStackPanel.Children)
+        //    {
+        //        if (checkBox.IsChecked.Value)
+        //        {
+        //            nbRealisateurs++;
+        //        }
+        //    }
+
+        //    if (nbRealisateurs <= 0)
+        //    {
+        //        erreurs += " - Veuillez choisir au moins un réalisateur pour le film \n";
+        //    }
+
+
+        //    if (!string.IsNullOrWhiteSpace(erreurs))
+        //    {
+        //        valide = false;
+        //    }
+
+        //    return (valide, erreurs);
+        //}
+
+
+
+
+        // GESTION DES BTN ////////////////
 
 
         /// <summary>
@@ -263,16 +312,16 @@ namespace MonCine.Vues
         /// <param name="e"></param>
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            var (valide, erreurs) = FilmIsValid();
+            //var (valide, erreurs) = FilmIsValid();
 
-            if (!valide)
-            {
-                MessageBox.Show($"Veuillez remplir les champs nécéssaires \n\n\n{erreurs}", "Création d'un film",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            else
-            {
+            //if (!valide)
+            //{
+            //    MessageBox.Show($"Veuillez remplir les champs nécéssaires \n\n\n{erreurs}", "Création d'un film",
+            //        MessageBoxButton.OK,
+            //        MessageBoxImage.Information);
+            //}
+            //else
+            //{
                 Film film = GetFilmFromValues();
                 var result = _dalFilm.AddItem(film);
                 if (result)
@@ -280,82 +329,8 @@ namespace MonCine.Vues
                     RefreshItems();
                     MessageBox.Show($"Le film '{film.Name}' a été crée avec succès !", "Création de film",
                         MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                //}
             }
-        }
-
-
-        /// <summary>
-        /// Permet de valider les données insérées dans les champs d'un film
-        /// </summary>
-        /// <returns></returns>
-        private (bool, string) FilmIsValid()
-        {
-            bool valide = true;
-            string erreurs = "";
-
-            // Nom
-            if (NameField.Text.Length == 0)
-            {
-                erreurs += " - Veuillez remplir le nom du film \n";
-            }
-
-            // Categories
-            int nbCategories = 0;
-            foreach (StackPanel sp in CategoryStackPanel.Children)
-            {
-                foreach (CheckBox checkBox in sp.Children)
-                {
-                    if (checkBox.IsChecked.Value)
-                    {
-                        nbCategories++;
-                    }
-                }
-            }
-
-            if (nbCategories <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins une catégorie du film \n";
-            }
-
-            // Acteurs
-            int nbActeurs = 0;
-            foreach (CheckBox checkBox in ActeurStackPanel.Children)
-            {
-                if (checkBox.IsChecked.Value)
-                {
-                    nbActeurs++;
-                }
-            }
-
-            if (nbActeurs <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins un acteur pour le film \n";
-            }
-
-
-            // Realisateurs
-            int nbRealisateurs = 0;
-            foreach (CheckBox checkBox in ActeurStackPanel.Children)
-            {
-                if (checkBox.IsChecked.Value)
-                {
-                    nbRealisateurs++;
-                }
-            }
-
-            if (nbRealisateurs <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins un réalisateur pour le film \n";
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(erreurs))
-            {
-                valide = false;
-            }
-
-            return (valide, erreurs);
         }
 
 
@@ -373,16 +348,16 @@ namespace MonCine.Vues
             }
             else
             {
-                var (valide, erreurs) = FilmIsValid();
+               // var (valide, erreurs) = FilmIsValid();
 
-                if (!valide)
-                {
-                    MessageBox.Show($"Veuillez remplir les champs nécéssaires \n\n\n{erreurs}",
-                        "Modification d'un film", MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                }
-                else
-                {
+                //if (!valide)
+                //{
+                //    MessageBox.Show($"Veuillez remplir les champs nécéssaires \n\n\n{erreurs}",
+                //        "Modification d'un film", MessageBoxButton.OK,
+                //        MessageBoxImage.Information);
+                //}
+                //else
+                //{
                     Film selectedFilm = (Film)LstFilms.SelectedItem;
                     Film updatedFilm = GetFilmFromValues();
                     updatedFilm.Id = selectedFilm.Id;
@@ -395,7 +370,7 @@ namespace MonCine.Vues
                         MessageBox.Show($"Le film '{updatedFilm.Name}' a été mis à jour avec succès !", "Modification",
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
-                }
+                //}
             }
         }
 
@@ -450,13 +425,65 @@ namespace MonCine.Vues
 
 
 
-        //private void BtnViderChamps_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ClearFields();
 
-        //    LstFilms.SelectedIndex = -1;
-        //    BtnDelete.IsEnabled = false;
-        //    BtnUpdate.IsEnabled = false;
-        //}
+        // GESTION DES LISTES ////////////////
+
+
+        private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Film film = (Film)LstFilms.SelectedItem;
+
+            if (film != null)
+            {
+                NameField.Text = film.Name;
+                CkbAffiche.IsChecked = film.SurAffiche;
+            }
+
+            BtnDelete.IsEnabled = film != null;
+            BtnUpdate.IsEnabled = film != null;
+            BtnAfficherProjections.IsEnabled = film != null;
+        }
+
+
+        private void LstRealisateurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Realisateur realisateur = (Realisateur)LstRealisateurs.SelectedItem;
+            RealisateursDansLeFilm.Add(realisateur);
+            RefreshItems();
+
+        }
+
+        private void LstActeurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Acteur acteur = (Acteur)LstActeurs.SelectedItem;
+            ActeursDansLeFilm.Add(acteur);
+            RefreshItems();
+
+        }
+
+        private void LstCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            String categorie = (String)LstCategories.SelectedItem;
+            CategoriesDansLeFilm.Add(categorie);
+            RefreshItems();
+        }
+
+        private void LstCategorieInTheMovie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            String categorie = (String)LstCategorieInTheMovie.SelectedItem;
+            CategoriesDansLeFilm.Remove(categorie);
+        }
+
+        private void LstActeursInTheMovie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Acteur acteur = (Acteur)LstActeursInTheMovie.SelectedItem;
+            ActeursDansLeFilm.Remove(acteur);
+        }
+
+        private void LstRealisateursInTheMovie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Realisateur realisateur = (Realisateur)LstRealisateursInTheMovie.SelectedItem;
+            RealisateursDansLeFilm.Remove(realisateur);
+        }
     }
 }
