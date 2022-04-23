@@ -107,9 +107,26 @@ namespace MonCine.Data
 
 
 
-        public bool UpdateItem(Projection pObj)
+        public bool UpdateItem(Projection pProjection)
         {
-            throw new NotImplementedException();
+            if (pProjection is null)
+            {
+                throw new ArgumentNullException("pProjection ", "La projection ne peut pas être null");
+            }
+
+            try
+            {
+                var collection = database.GetCollection<Projection>(CollectionName);
+                collection.ReplaceOne(x=>x.Id == pProjection.Id , pProjection);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Impossible de mettre à jour la projection de la collection {ex.Message}",
+                    "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+
+            return true;
         }
 
         public bool DeleteItem(Projection pProjection)
@@ -126,7 +143,7 @@ namespace MonCine.Data
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Impossible de mettre à jour la projection de la collection {ex.Message}",
+                MessageBox.Show($"Impossible de supprimer la projection de la collection {ex.Message}",
                     "Erreur de mise à jour", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }

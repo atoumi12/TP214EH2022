@@ -47,7 +47,7 @@ namespace MonCine.Vues
 
         private void BtnAffiche_Click(object sender, RoutedEventArgs e)
         {
-            FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALFilm());
+            FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALSalle());
             NavigationService?.Navigate(frmAffiche);
         }
     }
