@@ -33,7 +33,7 @@ namespace MonCine.Vues
             dalSalle = pDalSalle;
 
             // Date d'ajourd'hui au premier affichage du formulaire
-            DateRecherche= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            DateRecherche = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
             InitialConfiguration(DateRecherche);
         }
@@ -47,12 +47,23 @@ namespace MonCine.Vues
             // Projection
             List<Projection> Projections = dalProjection.GetProjectionsByDate(pDate);
             lstProjectionsAffiche.ItemsSource = Projections;
+            if (Projections.Count > 0)
+            {
+                StackPanelAffiche.Visibility = Visibility.Visible;
+                txtAcuneProjection.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                txtAcuneProjection.Visibility = Visibility.Visible;
+                StackPanelAffiche.Visibility = Visibility.Hidden;
+            }
 
             // Salles
             Salles = dalSalle.ReadItems();
-            Salles.ForEach(salle => ComboBoxSalles.Items.Add(salle));
-
-
+            if (ComboBoxSalles.Items.Count <= 0)
+            {
+                Salles.ForEach(salle => ComboBoxSalles.Items.Add(salle));
+            }
         }
 
 
@@ -61,25 +72,54 @@ namespace MonCine.Vues
             NavigationService?.GoBack();
         }
 
+
         private void btnRetirerProjection_Click(object sender, RoutedEventArgs e)
         {
             Projection projection = lstProjectionsAffiche.SelectedItem as Projection;
 
             if (projection is null)
             {
-                MessageBox.Show("Veuillez sélectionner une projection programmée pour la retirer", "Suppression de projection", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Veuillez sélectionner une projection programmée pour la retirer",
+                    "Suppression de projection", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                bool result = dalProjection.DeleteItem(projection);
-                if (result)
+                if (MessageBox.Show("Êtes-vous sur de vouloir retirer la projection ?", "Suppression de la projection",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    lstProjectionsAffiche.SelectedIndex = -1;
-                    InitialConfiguration(DateRecherche);
-                    MessageBox.Show("La projection a été supprimée avec succès!" ,"Suppression de projection", MessageBoxButton.OK, MessageBoxImage.Information);
+                    bool result = dalProjection.DeleteItem(projection);
+                    if (result)
+                    {
+                        lstProjectionsAffiche.SelectedIndex = -1;
+                        MessageBox.Show("La projection a été supprimée avec succès!", "Suppression de projection",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        InitialConfiguration(DateRecherche);
+                    }
                 }
             }
         }
+
+
+        private void btnModifierProjection_Click(object sender, RoutedEventArgs e)
+        {
+            Projection projection = lstProjectionsAffiche.SelectedItem as Projection;
+
+            if (projection != null)
+            {
+                projection.Salle = ComboBoxSalles.SelectedItem as Salle;
+                projection.DateDebut = DatePickerDateProjectionFilm.SelectedDate.Value;
+
+                bool result = dalProjection.UpdateItem(projection);
+                if (result)
+                {
+                    MessageBox.Show($"La projection a été modifié avec succès", "Modification", MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    InitialConfiguration(DateRecherche);
+                }
+            }
+        }
+
 
         private void lstProjectionsAffiche_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -94,31 +134,17 @@ namespace MonCine.Vues
 
                 Salle salle = Salles.Where(s => s.Id == projection.Salle.Id).ToList()[0];
                 ComboBoxSalles.SelectedItem = salle;
-
             }
             else
             {
                 GroupBoxInformationsProjection.Visibility = Visibility.Hidden;
             }
-
-
-
         }
 
         private void DatePickerRecherche_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            DateTime date = DatePickerRecherche.SelectedDate.Value;
-            InitialConfiguration(date);
-        }
-
-        private void btnModifierProjection_Click(object sender, RoutedEventArgs e)
-        {
-            Projection projection = lstProjectionsAffiche.SelectedItem as Projection;
-
-            if (projection != null)
-            {
-                dalProjection.UpdateItem(projection);
-            }
+            DateRecherche = DatePickerRecherche.SelectedDate.Value;
+            InitialConfiguration(DateRecherche);
         }
     }
 }

@@ -201,5 +201,10 @@ namespace MonCineTests
             Assert.Equal(film, filmList.Find(x=>x.Name == film.Name) );
 
         }
+
+
+        //TODO: AddProjectionDate tests
     }
+
+
 }

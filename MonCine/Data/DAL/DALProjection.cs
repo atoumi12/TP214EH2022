@@ -75,8 +75,6 @@ namespace MonCine.Data
             return projections;
         }
 
-
-
         public List<Projection> GetProjectionsByDate(DateTime pDate)
         {
             if (pDate == DateTime.MinValue)
@@ -118,6 +116,12 @@ namespace MonCine.Data
             {
                 var collection = database.GetCollection<Projection>(CollectionName);
                 collection.ReplaceOne(x=>x.Id == pProjection.Id , pProjection);
+
+                // Mettre à jour le film associé à la projection
+                //Film film = pProjection.Film;
+                //film.DatesProjection
+                //DALFilm dalFilm = new DALFilm();
+                //dalFilm.UpdateItem(film);
             }
             catch (Exception ex)
             {

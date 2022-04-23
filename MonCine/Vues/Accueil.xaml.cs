@@ -26,7 +26,6 @@ namespace MonCine.Vues
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: A changer
             FAbonnes frmAbonnes = new FAbonnes(new DALAbonne());
 
             NavigationService?.Navigate(frmAbonnes);
