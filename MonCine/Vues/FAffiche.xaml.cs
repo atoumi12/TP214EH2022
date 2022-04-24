@@ -139,7 +139,7 @@ namespace MonCine.Vues
                 DatePickerDateProjectionFilm.SelectedDate = projection.DateDebut;
 
                 Salle salle = Salles.Where(s => s.Id == projection.Salle.Id).ToList()[0];
-                ComboBoxSalles.SelectedItem = salle;
+                ComboBoxSalles.SelectedIndex = Salles.IndexOf(salle);
             }
             else
             {

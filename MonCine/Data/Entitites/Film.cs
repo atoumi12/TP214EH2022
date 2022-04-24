@@ -108,7 +108,7 @@ namespace MonCine.Data
             }
             else
             {
-                throw new ArgumentException("Le film ne peux pas dépasser deux projections par année ");
+                throw new ArgumentException("Le film ne peux pas dépasser deux projections par année");
             }
         }
 

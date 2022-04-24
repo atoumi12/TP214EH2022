@@ -50,7 +50,7 @@
 
         <!--Affiche-->
         <StackPanel x:Name="StackPanelAffiche" Grid.Row="3" Grid.Column="2" Grid.RowSpan="4" Orientation="Vertical">
-            <TextBlock Text="Film à l'affiche"
+            <TextBlock Text="Film(s) à l'affiche"
                        FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">
             </TextBlock>
 

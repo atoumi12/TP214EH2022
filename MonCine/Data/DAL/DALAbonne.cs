@@ -59,7 +59,7 @@ namespace MonCine.Data
             {
                 new Abonne("Abonne 1", "Leonardo Di caprio", "Denis Villeneuve", 12, uneDate, "Gwenael", "Galliot"),
                 new Abonne("Abonne 2", "Johnny depp", "Denis Villeneuve", 3, uneDate, "Loan", "Rage"),
-                new Abonne("Abonne 3", "robert downey jr", "Denis Villeneuve", 22, uneDate, "Amhed", "Toumi")
+                new Abonne("Abonne 3", "robert downey jr", "Denis Villeneuve", 22, uneDate, "Ahmed", "Toumi")
             };
 
             try

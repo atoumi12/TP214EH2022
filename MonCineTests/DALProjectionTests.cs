@@ -254,7 +254,7 @@ namespace MonCineTests
             DateTime date = new DateTime(2022, 04, 20);
 
             // Act
-            List<Projection> projections = dal.GetProjectionsByDate(date);
+            List<Projection> projections = dal.GetProjectionsByDate(date.Date);
 
             // Assert
             Assert.Equal(projections, projectionsList.FindAll(x=>x.DateDebut == date).ToList());
