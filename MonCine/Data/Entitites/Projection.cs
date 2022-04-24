@@ -21,26 +21,9 @@ namespace MonCine.Data
             DateDebut = pDate;
         }
 
-
-
-        public Projection selectionnerProjection()
-        {
-            return this;
-        }
-
-        public bool encorePlaceDisponible()
-        {
-            throw new NotImplementedException();
-        }
-
-        public (DateTime , DateTime) consulterHoraire()
-        {
-            return (DateDebut, DateFin);
-        }
-
         public override string ToString()
         {
-            return $"Salle : {Salle} - {DateDebut.ToShortDateString()}";
+            return $"{Film.Name} - {Salle} - {DateDebut.ToShortDateString()}";
         }
     }
 }

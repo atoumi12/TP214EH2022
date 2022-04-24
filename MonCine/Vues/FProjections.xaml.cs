@@ -20,7 +20,7 @@ namespace MonCine.Vues
     /// </summary>
     public partial class FProjections : Page
     {
-        private DALProjection Dal { get; set; }
+        private DALProjection DalProjection { get; set; }
         private DALFilm DalFilm { get; set; }
         private DALSalle DalSalle { get; set; }
 
@@ -28,10 +28,10 @@ namespace MonCine.Vues
         private List<Salle> Salles = new List<Salle>();
 
 
-        public FProjections(DALFilm pDalFilm, DALSalle pDalSalle, DALProjection pDal)
+        public FProjections(DALFilm pDalFilm, DALSalle pDalSalle, DALProjection pDalProjection)
         {
             InitializeComponent();
-            Dal = pDal;
+            DalProjection = pDalProjection;
             DalFilm = pDalFilm;
             DalSalle = pDalSalle;
             InitialConfiguration();
@@ -75,6 +75,8 @@ namespace MonCine.Vues
             return projection;
         }
 
+
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             bool champsRemplis = FilmCombobox.SelectedIndex != -1 && SalleCombobox.SelectedIndex != -1 && DatePickerProjection.SelectedDate != null;
@@ -86,9 +88,12 @@ namespace MonCine.Vues
             else
             {
                 Projection projection = CreateProjectionToAdd();
-                var result = Dal.AddItem(projection);
+                // Créer la projection
+                var resultProjection = DalProjection.AddItem(projection);
+                // Affecter la date de la projection au film concernée
+                var resultFilm = DalFilm.AddProjectionDate(projection);
 
-                if (result)
+                if (resultProjection && resultFilm)
                 {
                     MessageBox.Show($"La projection a été crée avec succès !", "Création de projection",
                         MessageBoxButton.OK, MessageBoxImage.Information);

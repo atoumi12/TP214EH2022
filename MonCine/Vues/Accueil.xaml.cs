@@ -26,7 +26,6 @@ namespace MonCine.Vues
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: A changer
             FAbonnes frmAbonnes = new FAbonnes(new DALAbonne());
 
             NavigationService?.Navigate(frmAbonnes);
@@ -45,5 +44,10 @@ namespace MonCine.Vues
             NavigationService?.Navigate(frmFilms);
         }
 
+        private void BtnAffiche_Click(object sender, RoutedEventArgs e)
+        {
+            FAffiche frmAffiche = new FAffiche(new DALProjection(), new DALSalle());
+            NavigationService?.Navigate(frmAffiche);
+        }
     }
 }

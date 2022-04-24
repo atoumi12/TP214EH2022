@@ -38,6 +38,7 @@ namespace MonCine.Vues
         {
             txtFilmName.Text = $"{FilmChoisi.Name}";
 
+            // TODO: Appeler la methode du film directement
             projections = dalProjection.GetProjectionsOfFilm(FilmChoisi);
 
             if (projections.Count == 0)
