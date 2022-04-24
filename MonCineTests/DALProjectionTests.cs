@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using MonCine.Data;
@@ -29,9 +30,9 @@ namespace MonCineTests
 
             projectionsList = new List<Projection>
             {
-                new Projection(new Salle(1), new Film("Film1 Dal Projection"), DateTime.Now),
-                new Projection(new Salle(2), new Film("Film1 Dal Projection"), DateTime.Now),
-                new Projection(new Salle(3), new Film("Film2 Dal Projection"), DateTime.Now),
+                new Projection(new Salle(1), new Film("Film1 Dal Projection"), new DateTime(2022, 01,01)),
+                new Projection(new Salle(2), new Film("Film1 Dal Projection"), new DateTime(2022, 04,20)),
+                new Projection(new Salle(3), new Film("Film2 Dal Projection"), new DateTime(2022, 04,20)),
                 new Projection(new Salle(4), new Film("Film2 Dal Projection"), DateTime.Now)
             };
         }
@@ -93,6 +94,101 @@ namespace MonCineTests
 
 
         [Fact]
+        public void UpdateItem_moqReplaceOne_ThrowsArgumentNullExceptionIfFilmIsNull()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            Projection projection = null;
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate
+            {
+                dal.UpdateItem(projection);
+            });
+        }
+
+
+        [Fact]
+        public void UpdateItem_moqReplaceOne_ReturnTrueIfFilmUpdated()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            // Act
+            Projection projection= projectionsList[0];
+            projection.Film.Name = "Film updated moq";
+            dal.UpdateItem(projection);
+
+            // Assert
+            Assert.Equal(projection, projectionsList.Find(x => x.Film.Name == projection.Film.Name));
+
+        }
+
+
+        [Fact]
+        public void DeleteItem_moqDeleteOne_ReturnTrueIfFilmDeleted()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            Projection projection = projectionsList[0];
+
+            // Act 
+            bool result = dal.DeleteItem(projection);
+
+
+            // Assert
+            Assert.True(result);
+
+        }
+
+
+        [Fact]
+        public void DeleteItem_moqDeleteOne_ThrowsArgumentNullExceptionIfFilmIsNull()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            Projection projection = null;
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate
+            {
+                dal.DeleteItem(projection);
+            });
+        }
+
+        [Fact]
+        public void DeleteItem_moqDeleteOne_UpdateListCountCorrectly()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            Projection projection = projectionsList[0];
+
+            // Act
+            dal.DeleteItem(projection);
+
+            //Assert
+            Assert.Equal(projectionsList.Count, projectionsList.Count);
+
+        }
+
+
+
+
+        [Fact]
         public void GetProjectionsOfFilm_moqFind_ThrowsArgumentNullExceptionIfProjectionIsNull()
         {
             // Arrange
@@ -128,7 +224,43 @@ namespace MonCineTests
         }
 
 
-        // TODO: deleteItem , updateItem , GetProjectionsByDate tests
+
+        [Fact]
+        public void GetProjectionsByDate_moqFind_ThrowsArgumentNullExceptionIfDateIsNull()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            DateTime date = DateTime.MinValue;
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate
+            {
+                dal.GetProjectionsByDate(date);
+            });
+        }
+
+
+        [Fact]
+        public void GetProjectionsByDate_moqFind_ReturnListOfProjections()
+        {
+            // Arrange
+            InitializeMongoProjectionCollection();
+
+            var dal = new DALProjection(mongoClient.Object);
+
+            DateTime date = new DateTime(2022, 04, 20);
+
+            // Act
+            List<Projection> projections = dal.GetProjectionsByDate(date);
+
+            // Assert
+            Assert.Equal(projections, projectionsList.FindAll(x=>x.DateDebut == date).ToList());
+        }
+
+        // TODO:  , GetProjectionsByDate tests
 
     }
 }

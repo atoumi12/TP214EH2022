@@ -203,7 +203,46 @@ namespace MonCineTests
         }
 
 
-        //TODO: AddProjectionDate tests
+        [Fact]
+        public void AddProjectionDate_AjouterDateProjection_ReturnTrueIfFilmUpdated()
+        {
+            // Arrange
+            InitializeMongoFilmCollection();
+
+            var dal = new DALFilm(mongoClient.Object);
+            Film film = filmList[0];
+            Projection projection = new Projection(new Salle(20), film, DateTime.Now);
+
+            // Act
+            var result = dal.AddProjectionDate(projection);
+
+
+
+            // Assert
+            Assert.True(result);
+
+        }
+
+        [Fact]
+        public void AddProjectionDate_AjouterDateProjection_ThrowArgumentNullExceptionifProjectionIsNull()
+        {
+            // Arrange
+            InitializeMongoFilmCollection();
+
+            var dal = new DALFilm(mongoClient.Object);
+            Film film = filmList[0];
+            Projection projection = null;
+
+
+
+            // Act and Assert
+            ExceptionUtil.AssertThrows<ArgumentNullException>(delegate
+            {
+                dal.AddProjectionDate(projection);
+            });
+
+        }
+        
     }
 
 

@@ -103,9 +103,11 @@ namespace MonCine.Vues
 
         private void btnModifierProjection_Click(object sender, RoutedEventArgs e)
         {
+            var (valide, erreurs) = ValidateProjection();
+
             Projection projection = lstProjectionsAffiche.SelectedItem as Projection;
 
-            if (projection != null)
+            if (projection != null && valide)
             {
                 projection.Salle = ComboBoxSalles.SelectedItem as Salle;
                 projection.DateDebut = DatePickerDateProjectionFilm.SelectedDate.Value;
@@ -117,6 +119,10 @@ namespace MonCine.Vues
                         MessageBoxImage.Information);
                     InitialConfiguration(DateRecherche);
                 }
+            }
+            else if (!valide)
+            {
+                MessageBox.Show($"Veuillez corriger le(s) erreur(s) suivante(s) : \n\n {erreurs}", "Erreur de modification de projection", MessageBoxButton.OK, MessageBoxImage.Error );
             }
         }
 
@@ -145,6 +151,36 @@ namespace MonCine.Vues
         {
             DateRecherche = DatePickerRecherche.SelectedDate.Value;
             InitialConfiguration(DateRecherche);
+        }
+
+
+
+        /// <summary>
+        /// Permet de valider les données contenues dans les champs de la projection
+        /// </summary>
+        /// <returns>True si le format de données est correct, sinon False</returns>
+        private (bool, string) ValidateProjection()
+        {
+            bool valide = true;
+            string erreurs = "";
+
+            if (ComboBoxSalles.SelectedIndex == -1)
+            {
+                erreurs += " - Veuillez choisir une salle pour la projection \n";
+            }
+
+            if (DatePickerDateProjectionFilm.SelectedDate == null)
+            {
+                erreurs += " - Veuillez choisir une date de projection valide \n";
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(erreurs))
+            {
+                valide = false;
+            }
+
+            return (valide, erreurs);
         }
     }
 }

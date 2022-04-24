@@ -24,7 +24,7 @@ namespace MonCine.Data
         /// <returns>Liste de Projection</returns>
         public List<Projection> ReadItems()
         {
-            return null;
+            throw new NotImplementedException();
         }
 
 

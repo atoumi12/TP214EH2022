@@ -43,28 +43,6 @@ namespace MonCine.Data
             }
         }
 
-        public bool AddItem(Salle pSalle)
-        {
-            if (pSalle is null)
-            {
-                throw new ArgumentNullException("pSalle", "La salle ne peut pas être null");
-            }
-
-            try
-            {
-                var collection = database.GetCollection<Salle>(CollectionName);
-                collection.InsertOneAsync(pSalle);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Impossible d'ajouter la salle dans la collection {ex.Message}",
-                    "Erreur d'ajout", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                throw;
-            }
-
-            return true;
-        }
 
 
         public List<Salle> ReadItems()
@@ -74,7 +52,7 @@ namespace MonCine.Data
             try
             {
                 var collection = database.GetCollection<Salle>(CollectionName);
-                salles = collection.Aggregate().ToList();
+                salles = collection.FindSync(Builders<Salle>.Filter.Empty).ToList();
             }
             catch (Exception ex)
             {
@@ -83,6 +61,13 @@ namespace MonCine.Data
             }
 
             return salles;
+        }
+
+
+
+        public bool AddItem(Salle pSalle)
+        {
+            throw new NotImplementedException();
         }
 
         public bool UpdateItem(Salle pObj)

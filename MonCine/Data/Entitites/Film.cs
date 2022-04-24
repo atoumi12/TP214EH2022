@@ -41,6 +41,7 @@ namespace MonCine.Data
             NoteMoyenne = CalculerMoyennesNotes();
 
             DatesProjection = new List<DateTime>();
+            NbProjection = 0;
         }
 
 
@@ -90,12 +91,24 @@ namespace MonCine.Data
         }
 
 
-        // TODO: Refaire cette méthode correctement, gestion exception
         public void AjouterDateProjection(Projection pProjection)
         {
-            if (NbProjection <= 2)
+            if (pProjection is null)
+            {
+                throw new ArgumentNullException("pProjection", "La projection ne peut pas être nulle");
+            }
+
+            DateTime derniereDate = DatesProjection.OrderBy(x => x.Date).LastOrDefault();
+            double daysSinceLastProjection = (DateTime.Now - derniereDate).TotalDays;
+
+            if (NbProjection <= 2 && daysSinceLastProjection < 365)
             {
                 DatesProjection.Add(pProjection.DateDebut);
+                NbProjection++;
+            }
+            else
+            {
+                throw new ArgumentException("Le film ne peux pas dépasser deux projections par année ");
             }
         }
 
