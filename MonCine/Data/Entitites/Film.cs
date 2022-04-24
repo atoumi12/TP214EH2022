@@ -98,18 +98,8 @@ namespace MonCine.Data
                 throw new ArgumentNullException("pProjection", "La projection ne peut pas être nulle");
             }
 
-            DateTime derniereDate = DatesProjection.OrderBy(x => x.Date).LastOrDefault();
-            double daysSinceLastProjection = (DateTime.Now - derniereDate).TotalDays;
-
-            if (NbProjection <= 2 && daysSinceLastProjection < 365)
-            {
-                DatesProjection.Add(pProjection.DateDebut);
-                NbProjection++;
-            }
-            else
-            {
-                throw new ArgumentException("Le film ne peux pas dépasser deux projections par année");
-            }
+            DatesProjection.Add(pProjection.DateDebut);
+            NbProjection++;
         }
 
         public override string ToString()

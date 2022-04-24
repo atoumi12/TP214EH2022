@@ -243,24 +243,6 @@ namespace MonCineTests
         }
 
 
-        [Fact]
-        public void GetProjectionsByDate_moqFind_ReturnListOfProjections()
-        {
-            // Arrange
-            InitializeMongoProjectionCollection();
-
-            var dal = new DALProjection(mongoClient.Object);
-
-            DateTime date = new DateTime(2022, 04, 20);
-
-            // Act
-            List<Projection> projections = dal.GetProjectionsByDate(date.Date);
-
-            // Assert
-            Assert.Equal(projections, projectionsList.FindAll(x=>x.DateDebut == date).ToList());
-        }
-
-        // TODO:  , GetProjectionsByDate tests
 
     }
 }
