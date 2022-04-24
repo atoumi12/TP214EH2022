@@ -82,18 +82,9 @@ namespace MonCine.Vues
 
 
 
-        /// <summary>
-        /// Permet de mettre à jour les données des éléments affichés et récupérer la nouvelle liste des films
-        /// </summary>
-        private void RefreshItems()
-        {
-            LstFilms.ItemsSource = _dalFilm.ReadItems();
 
+        // GESTION DES BTN ////////////////
 
-            LstActeursInTheMovie.ItemsSource = ActeursDansLeFilm;
-            LstRealisateursInTheMovie.ItemsSource = RealisateursDansLeFilm;
-            LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
-        }
 
         /// <summary>
         /// Permet de retourn à l'accueil.
@@ -104,100 +95,6 @@ namespace MonCine.Vues
         {
             NavigationService?.Navigate(new Accueil());
         }
-
-
-        /// <summary>
-        /// Permet de créer un objet film à partir des valeurs saisies dans les champs
-        /// </summary>
-        /// <returns>Film avec les valeurs saisies</returns>
-        private Film GetFilmFromValues()
-        {
-            // Recuperer les champs
-            string nom = NameField.Text;
-            bool surAffiche = CkbAffiche.IsChecked.Value;
-
-
-            List<Categorie> categories = new List<Categorie>();
-            foreach(String cat in CategoriesDansLeFilm)
-            {
-                Categorie uneCat;
-                if (Enum.TryParse<Categorie>(cat, true, out uneCat))
-                {
-                    categories.Add(uneCat);
-                }
-            }
-
-            //ClearFields();
-
-            Film film = new Film(nom,
-                categories,
-                ActeursDansLeFilm.ToList(),
-                Realisateurs.ToList(),
-                surAffiche);
-
-            return film;
-        }
-
-
-
-
-        /// <summary>
-        /// Permet de valider les données insérées dans les champs d'un film
-        /// </summary>
-        /// <returns></returns>
-        private (bool, string) FilmIsValid()
-        {
-            bool valide = true;
-            string erreurs = "";
-
-            // Nom
-            if (NameField.Text.Length == 0)
-            {
-                erreurs += " - Veuillez remplir le nom du film \n";
-            }
-
-            // CATEGORIES
-            List<Categorie> categories = new List<Categorie>();
-            foreach (String cat in CategoriesDansLeFilm)
-            {
-                Categorie uneCat;
-                if (Enum.TryParse<Categorie>(cat, true, out uneCat))
-                {
-                    categories.Add(uneCat);
-                }
-            }
-            if(categories.Count <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins une catégorie du film \n";
-            }
-
-
-
-            // ACTEURS
-            if(ActeursDansLeFilm.Count <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins un acteur pour le film \n";
-            }
-
-
-            // REALISATEUR
-            if(RealisateursDansLeFilm.Count <= 0)
-            {
-                erreurs += " - Veuillez choisir au moins un réalisateur pour le film \n";
-            }
-
-            if (!string.IsNullOrWhiteSpace(erreurs))
-            {
-                valide = false;
-            }
-
-            return (valide, erreurs);
-        }
-
-
-
-
-        // GESTION DES BTN ////////////////
 
 
         /// <summary>
@@ -379,6 +276,113 @@ namespace MonCine.Vues
         {
             Realisateur realisateur = (Realisateur)LstRealisateursInTheMovie.SelectedItem;
             RealisateursDansLeFilm.Remove(realisateur);
+        }
+
+
+
+
+        // UTILITAIIRE ////////////////
+
+
+        /// <summary>
+        /// Permet de mettre à jour les données des éléments affichés et récupérer la nouvelle liste des films
+        /// </summary>
+        private void RefreshItems()
+        {
+            LstFilms.ItemsSource = _dalFilm.ReadItems();
+
+            LstActeursInTheMovie.ItemsSource = ActeursDansLeFilm;
+            LstRealisateursInTheMovie.ItemsSource = RealisateursDansLeFilm;
+            LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
+        }
+
+
+
+        /// <summary>
+        /// Permet de créer un objet film à partir des valeurs saisies dans les champs
+        /// </summary>
+        /// <returns>Film avec les valeurs saisies</returns>
+        private Film GetFilmFromValues()
+        {
+            // Recuperer les champs
+            string nom = NameField.Text;
+            bool surAffiche = CkbAffiche.IsChecked.Value;
+
+
+            List<Categorie> categories = TranformeEnumToList(CategoriesDansLeFilm);
+
+            //ClearFields();
+
+            Film film = new Film(nom,
+                categories,
+                ActeursDansLeFilm.ToList(),
+                Realisateurs.ToList(),
+                surAffiche);
+
+            return film;
+        }
+
+
+
+        private List<Categorie> TranformeEnumToList(ObservableCollection<String> _CategoriesDansLeFilm)
+        {
+            List<Categorie> categories = new List<Categorie>();
+            foreach (String cat in _CategoriesDansLeFilm)
+            {
+                Categorie uneCat;
+                if (Enum.TryParse<Categorie>(cat, true, out uneCat))
+                {
+                    categories.Add(uneCat);
+                }
+            }
+            return categories;
+        }
+
+
+
+        /// <summary>
+        /// Permet de valider les données insérées dans les champs d'un film
+        /// </summary>
+        /// <returns></returns>
+        private (bool, string) FilmIsValid()
+        {
+            bool valide = true;
+            string erreurs = "";
+
+            // Nom
+            if (NameField.Text.Length == 0)
+            {
+                erreurs += " - Veuillez remplir le nom du film \n";
+            }
+
+            // CATEGORIES
+            List<Categorie> categories = TranformeEnumToList(CategoriesDansLeFilm);
+            if (categories.Count <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins une catégorie du film \n";
+            }
+
+
+
+            // ACTEURS
+            if (ActeursDansLeFilm.Count <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins un acteur pour le film \n";
+            }
+
+
+            // REALISATEUR
+            if (RealisateursDansLeFilm.Count <= 0)
+            {
+                erreurs += " - Veuillez choisir au moins un réalisateur pour le film \n";
+            }
+
+            if (!string.IsNullOrWhiteSpace(erreurs))
+            {
+                valide = false;
+            }
+
+            return (valide, erreurs);
         }
     }
 }
