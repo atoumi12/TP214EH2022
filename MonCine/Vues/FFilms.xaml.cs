@@ -34,7 +34,11 @@ namespace MonCine.Vues
         private DALActeur _dalActeur { get; set; }
         private DALRealisateur _dalRealisateur { get; set; }
         private DALProjection _dalProjection { get; set; }
-       
+
+
+        int indexOfMovieSelected;
+
+
 
 
         public FFilms(DALFilm pDalFilm, DALActeur pDalActeur, DALRealisateur pDalRealisateur,
@@ -78,6 +82,13 @@ namespace MonCine.Vues
             ActeursDansLeFilm = new ObservableCollection<Acteur>();
             RealisateursDansLeFilm = new ObservableCollection<Realisateur>();
             CategoriesDansLeFilm = new ObservableCollection<String>();
+
+            LstActeursInTheMovie.ItemsSource = ActeursDansLeFilm;
+            LstRealisateursInTheMovie.ItemsSource = RealisateursDansLeFilm;
+            LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
+
+            LstFilms.SelectedIndex = -1;
+
         }
 
 
@@ -118,11 +129,12 @@ namespace MonCine.Vues
                 var result = _dalFilm.AddItem(film);
                 if (result)
                 {
-                    RefreshItems();
                     MessageBox.Show($"Le film '{film.Name}' a été crée avec succès !", "Création de film",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
+            ClearLisView();
+            InitialItemConfiguration();
         }
 
 
@@ -158,12 +170,12 @@ namespace MonCine.Vues
 
                     if (result)
                     {
-                        RefreshItems();
                         MessageBox.Show($"Le film '{updatedFilm.Name}' a été mis à jour avec succès !", "Modification",
                             MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
+            InitialItemConfiguration();
         }
 
 
@@ -187,11 +199,13 @@ namespace MonCine.Vues
                 if (result)
                 {
                     NameField.Text = "";
-                    RefreshItems();
+                    //RefreshItems();
                     MessageBox.Show($"Le film '{film.Name}' a été supprimé avec succès !", "Suppression",
                         MessageBoxButton.OK, MessageBoxImage.None);
                 }
             }
+            ClearLisView();
+            InitialItemConfiguration();
         }
 
 
@@ -223,12 +237,23 @@ namespace MonCine.Vues
 
         private void LstFilms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (LstFilms.SelectedIndex == -1)
+            {
+                ClearLisView();
+            }
+
             Film film = (Film)LstFilms.SelectedItem;
 
             if (film != null)
             {
                 NameField.Text = film.Name;
                 CkbAffiche.IsChecked = film.SurAffiche;
+                ChargementDataDuFilm(film);
+            }
+
+            if (LstFilms.SelectedIndex != -1)
+            {
+                indexOfMovieSelected = LstFilms.SelectedIndex;
             }
 
             BtnDelete.IsEnabled = film != null;
@@ -240,24 +265,33 @@ namespace MonCine.Vues
         private void LstRealisateurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Realisateur realisateur = (Realisateur)LstRealisateurs.SelectedItem;
-            RealisateursDansLeFilm.Add(realisateur);
-            RefreshItems();
-
+            if (!RealisateursDansLeFilm.Contains(realisateur) && realisateur != null)
+            {
+                RealisateursDansLeFilm.Add(realisateur);
+            }
+            LstRealisateurs.SelectedIndex = -1;
         }
 
         private void LstActeurs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Acteur acteur = (Acteur)LstActeurs.SelectedItem;
-            ActeursDansLeFilm.Add(acteur);
-            RefreshItems();
-
+            if (!ActeursDansLeFilm.Contains(acteur) && acteur != null)
+            {
+                ActeursDansLeFilm.Add(acteur);
+            }
+           
+            LstActeurs.SelectedIndex = -1;
         }
 
         private void LstCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             String categorie = (String)LstCategories.SelectedItem;
-            CategoriesDansLeFilm.Add(categorie);
-            RefreshItems();
+            if (!CategoriesDansLeFilm.Contains(categorie) && categorie != null)
+            {
+                CategoriesDansLeFilm.Add(categorie);
+            }
+            
+            LstCategories.SelectedIndex = -1;
         }
 
         private void LstCategorieInTheMovie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -283,18 +317,36 @@ namespace MonCine.Vues
 
         // UTILITAIIRE ////////////////
 
-
-        /// <summary>
-        /// Permet de mettre à jour les données des éléments affichés et récupérer la nouvelle liste des films
-        /// </summary>
-        private void RefreshItems()
+        private void ChargementDataDuFilm(Film _film)
         {
-            LstFilms.ItemsSource = _dalFilm.ReadItems();
+            ClearLisView();
+            foreach (Acteur acteur in _film.Acteurs)
+            {
+                ActeursDansLeFilm.Add(acteur);
+            }
 
-            LstActeursInTheMovie.ItemsSource = ActeursDansLeFilm;
-            LstRealisateursInTheMovie.ItemsSource = RealisateursDansLeFilm;
-            LstCategorieInTheMovie.ItemsSource = CategoriesDansLeFilm;
+            foreach (Realisateur realisateur in _film.Realisateurs)
+            {
+                RealisateursDansLeFilm.Add(realisateur);
+            }
+
+            foreach (Categorie categorie in _film.Categories)
+            {
+                CategoriesDansLeFilm.Add(categorie.ToString());
+            }
+
         }
+
+
+
+        private void ClearLisView()
+        {
+            ActeursDansLeFilm.Clear();
+            RealisateursDansLeFilm.Clear();
+            CategoriesDansLeFilm.Clear();
+
+        }
+
 
 
 
@@ -316,7 +368,7 @@ namespace MonCine.Vues
             Film film = new Film(nom,
                 categories,
                 ActeursDansLeFilm.ToList(),
-                Realisateurs.ToList(),
+                RealisateursDansLeFilm.ToList(),
                 surAffiche);
 
             return film;
