@@ -247,7 +247,6 @@ namespace MonCine.Vues
             if (film != null)
             {
                 NameField.Text = film.Name;
-                CkbAffiche.IsChecked = film.SurAffiche;
                 ChargementDataDuFilm(film);
             }
 
@@ -358,7 +357,6 @@ namespace MonCine.Vues
         {
             // Recuperer les champs
             string nom = NameField.Text;
-            bool surAffiche = CkbAffiche.IsChecked.Value;
 
 
             List<Categorie> categories = TranformeEnumToList(CategoriesDansLeFilm);
@@ -368,8 +366,7 @@ namespace MonCine.Vues
             Film film = new Film(nom,
                 categories,
                 ActeursDansLeFilm.ToList(),
-                RealisateursDansLeFilm.ToList(),
-                surAffiche);
+                RealisateursDansLeFilm.ToList());
 
             return film;
         }
