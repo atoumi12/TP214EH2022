@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FProjectionFilm"
-      Background="AliceBlue" FontSize="20" Width="450" Height="600">
+      Background="AliceBlue" FontSize="20">
 
     <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
