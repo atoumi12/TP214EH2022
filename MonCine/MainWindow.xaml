@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonCine"
         mc:Ignorable="d"
-        Title="MainWindow" Height="469" Width="822">
+        Title="MainWindow" Height="650" Width="822">
 
     <DockPanel>
         <Frame x:Name="_NavigationFrame" NavigationUIVisibility="Hidden" />
