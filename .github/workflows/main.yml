@@ -6,8 +6,8 @@ on: #déclencheur du workflow
       - "TP2-v*" #contenant le tag 'TP2-V....'   EX: je push une modification avec le tag 'TP2-V1.0.0' ce flow sera activé automatiquement
 
 env:
-  PROJECT_PATH: TP214EH2022/MonCine.csproj #variable d'environnement du workflow (path vers le projet)
-  TEST_PROJECT_PATH: TP214EH2022/MonCineTests.csproj
+  PROJECT_PATH: MonCine/MonCine.csproj #variable d'environnement du workflow (path vers le projet)
+  TEST_PROJECT_PATH: MonCineTests/MonCineTests.csproj
 
 jobs: #liste des actions qui seront déclenchées par le workflow
   deploy: #nom de l'action
@@ -50,5 +50,5 @@ jobs: #liste des actions qui seront déclenchées par le workflow
       - uses: csexton/release-asset-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: TP214EH2022/bin/Release/netcoreapp3.1/win-x64/publish/*.exe #path vers votre exécutable
+          pattern: MonCine/bin/Release/netcoreapp3.1/win-x64/publish/*.exe #path vers votre exécutable
           release-url: ${{ steps.create_release.outputs.upload_url }}
